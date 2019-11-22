@@ -14,7 +14,6 @@ while(True):
         if letter == ' ':
             x = letter
         else:
-            #number =
             if listOfCharacters.index(letter) + randomNumber < 62:
                 x = listOfCharacters[listOfCharacters.index(letter) + randomNumber]
             else:

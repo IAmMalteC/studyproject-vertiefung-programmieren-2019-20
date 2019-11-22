@@ -1,23 +1,18 @@
-from random import randint
-import string
+print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
 
 while(True):
-    textFromUser = input('Feel free to write your text:')
-    #amount in the list
-    listOfCharacters = string.ascii_letters + string.digits
-    output = ''
-    #Encryption with a random number (26*2+10 = 62)
-    randomNumber = randint(1, 61)
-
-    for letter in textFromUser:
-        #checks for spaces
-        if letter == ' ':
-            x = letter
-        else:
-            if listOfCharacters.index(letter) + randomNumber < 62:
-                x = listOfCharacters[listOfCharacters.index(letter) + randomNumber]
-            else:
-                x = listOfCharacters[listOfCharacters.index(letter) + randomNumber - 62]
-        output = output + x
-
-    print(output, '\nEncrypted with the factor', randomNumber)
+    text = input('Please choose a value and press Enter:')
+    # Cesar Encryption
+    if(text == '1'):
+    # Mono alphatic substition
+        break
+    elif(text == '2'):
+        break
+    #About page
+    elif(text == '3'):
+        print('This is a basic encryption tool')
+    #Quit programm
+    elif(text == '4'):
+        break
+    else:
+        print('You choose not a valid value.\nTry again.')

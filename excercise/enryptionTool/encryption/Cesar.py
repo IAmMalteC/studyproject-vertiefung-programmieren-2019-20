@@ -20,6 +20,7 @@ class Cesar(object):
             output = ''
 
     def encrypter(self, offsetFactor, text, liste):
+        global x
         if text == ' ':
             x = text
         elif len(liste) < offsetFactor:

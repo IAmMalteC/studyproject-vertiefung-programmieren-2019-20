@@ -4,12 +4,12 @@ from random import randint
 while(True):
     textFromUser = input('Feel free to write your text:')
     output = ''
-    #wir wollen immer eine zufällige Nummer ziehen
+    #Encryption with a random number
     randomNumber = randint(1, 73)
     for letter in textFromUser:
-        #Unicoderaum 0-9 = 48-57, A-Z = 65-90, a-z = 97-122
+        #Unicode 0-9 = 48-57, A-Z = 65-90, a-z = 97-122
         if letter == ' ':
-            newLetter = letter
+            x = ord(letter)
         else:
             x = ord(letter) + randomNumber
             if (x > 57 and x < 64) or (x > 90 and x < 97):
@@ -22,4 +22,4 @@ while(True):
                     # Um die Sonderzeichen zwischen 9 und A und zwischen Z und a zu überspringen
                     x += 7
         output = output + chr(x)
-    print(output, 'Randomfaktror is ', randomNumber)
+    print(output, 'Encrypted with the factor ', randomNumber)

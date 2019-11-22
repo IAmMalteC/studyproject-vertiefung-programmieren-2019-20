@@ -1,13 +1,16 @@
-from random import randint
 import string
+from userinput import offset
 
+factor = offset.get_offset(input("Please choose an offset factor:"))
+print('Your offset factor is:', factor)
+
+listOfCharacters = string.ascii_uppercase + string.ascii_lowercase + string.digits + string.punctuation
+output = ''
+
+#Hier ist die alte Methode die muss nachher weg
 while(True):
-    textFromUser = input('Feel free to write your text:')
-    #amount in the list
-    listOfCharacters = string.ascii_letters + string.digits
-    output = ''
+    textFromUser = input('Type the text you want to encrypt:')
     #Encryption with a random number (26*2+10 = 62)
-    randomNumber = randint(1, 61)
 
     for letter in textFromUser:
         #checks for spaces

@@ -21,11 +21,16 @@ class Cesar(object):
 
     def encrypter(self, offsetFactor, text, liste):
         global x
-        if text == ' ':
-            x = text
-        elif len(liste) < offsetFactor:
-            newOffsetFactor = offsetFactor - len(liste)
-            self.encrypter(newOffsetFactor, text, liste)
-        else:
-            x = liste[liste.index(text) + offsetFactor]
+        try:
+            if text == ' ':
+                x = text
+            elif len(liste) < offsetFactor:
+                newOffsetFactor = offsetFactor - len(liste)
+                Cesar.encrypter(self, newOffsetFactor, text, liste)
+            else:
+                x = liste[liste.index(text) + offsetFactor]
+        except IndexError:
+            # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1
+            Cesar.encrypter(self, offsetFactor - len(liste), text, liste)
+
         return x

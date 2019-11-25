@@ -29,7 +29,7 @@ class TestCesar(TestCase):
 
     def test_list_contains_characters(self):
         """
-        Test if all asked letters are in the string
+        Tests if all asked letters are in the string
         """
         textData = "~"
         self.assertIn(textData, self.listOfCharacters)

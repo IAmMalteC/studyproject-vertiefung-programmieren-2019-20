@@ -11,7 +11,7 @@ while(True):
         a = Cesar()
     # Mono alphatic substition
     elif(text == '2'):
-        break
+        b = Monoalphabetic()
     #About page
     elif(text == '3'):
         print('This is a basic encryption tool')

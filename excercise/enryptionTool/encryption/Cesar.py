@@ -10,7 +10,7 @@ class Cesar(object):
 
         output = ''
         listOfCharacters = string.ascii_uppercase + string.ascii_lowercase + string.digits + string.punctuation
-        while (True):
+        while(True):
             textFromUser = input('Type the text you want to encrypt:')
 
             for letter in textFromUser:

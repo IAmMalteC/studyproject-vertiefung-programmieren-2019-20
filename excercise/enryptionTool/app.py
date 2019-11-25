@@ -1,5 +1,6 @@
 from userinput import offset
 from encryption.Cesar import Cesar
+from encryption.Monoalphabetic import Monoalphabetic
 
 print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
 

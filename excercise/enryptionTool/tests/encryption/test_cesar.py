@@ -15,17 +15,17 @@ class TestCesar(TestCase):
         # call with reduced value range
         textData = "~"
         result = Cesar.encrypter(self, 1, textData, self.listOfCharacters)
-        self.assertRegex(result, "A")
+        self.assertRegex(result, "a")
 
     def test_encrypter_output_offset_bigger_then_list(self):
         """
         Tests encryption output with offset higher then length of the list (OutOfRange)
         """
         # call with reduced value range
-        textData = "A"
+        textData = "a"
         offsetFactor = len(self.listOfCharacters)+1
         result = Cesar.encrypter(self, offsetFactor, textData, self.listOfCharacters)
-        self.assertRegex(result, "B")
+        self.assertRegex(result, "b")
 
     def test_list_contains_characters(self):
         """

@@ -9,7 +9,7 @@ class Cesar(object):
         print('Your offset factor is:', self.offsetFactor)
 
         output = ''
-        listOfCharacters = string.ascii_uppercase + string.ascii_lowercase + string.digits + string.punctuation
+        listOfCharacters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         while(True):
             textFromUser = input('Type the text you want to encrypt:')
 

@@ -4,7 +4,7 @@ from unittest import TestCase
 from encryption.Monoalphabetic import Monoalphabetic
 
 class TestMonoalphabetic(TestCase):
-    listOfCharacters = string.ascii_uppercase + string.ascii_lowercase + string.digits + string.punctuation
+    listOfCharacters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
     listOfCharactersReverse = Monoalphabetic.reverse_text(listOfCharacters)
 
     def test_encrypter(self):

@@ -6,7 +6,7 @@ class Monoalphabetic:
         print('You are using the Monoalphabetic encryption')
 
         output = ''
-        listOfCharacters = string.ascii_uppercase + string.ascii_lowercase + string.digits + string.punctuation
+        listOfCharacters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         listOfCharactersReverse = self.reverse_text(listOfCharacters)
 
         while(True):

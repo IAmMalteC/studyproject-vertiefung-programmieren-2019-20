@@ -5,7 +5,7 @@ from encryption.Cesar import Cesar
 
 
 class TestCesar(TestCase):
-    # ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+    # abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
     def test_encoder_output_offset_1(self):

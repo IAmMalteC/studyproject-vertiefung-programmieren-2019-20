@@ -8,10 +8,10 @@ while True:
     text = input('Please choose a value and press Enter:')
     # Cesar Encryption
     if text == '1':
-        a = Cesar()
+        Cesar()
     # Mono alphatic substition
     elif text == '2':
-        b = Monoalphabetic()
+        Monoalphabetic()
     #About page
     elif text == '3':
         print('This is a basic encryption tool')

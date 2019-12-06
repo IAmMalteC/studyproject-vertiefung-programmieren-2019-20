@@ -1,3 +1,4 @@
+from app import list_of_characters
 import string
 
 

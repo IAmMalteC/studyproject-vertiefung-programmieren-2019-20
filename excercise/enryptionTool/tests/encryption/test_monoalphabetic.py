@@ -3,6 +3,7 @@ import string
 from unittest import TestCase
 from encryption.Monoalphabetic import Monoalphabetic
 
+
 class TestMonoalphabetic(TestCase):
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
     list_of_characters_reverse = Monoalphabetic.reverse_text(list_of_characters)
@@ -21,7 +22,8 @@ class TestMonoalphabetic(TestCase):
         """
         text_data = "abcd"
         result = Monoalphabetic.reverse_text(text_data)
-        self.assertEqual(result,"dcba")
+        self.assertEqual(result, "dcba")
+
 
 if __name__ == '__main__':
     unittest.main()

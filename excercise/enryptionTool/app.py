@@ -6,9 +6,19 @@ import string
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
-def __startup__():
+
+def __startup__(db_session):
     print('LOGIN')
-    username = input('Please enter your Username: ')
+    username = "malte" #input('Please enter your Username: ')
+    user = User(username.lower())
+    # checks if the user already exists
+    if db_session.query(User).filter_by(name=username) is False:
+        db_session.add(user)
+        db_session.commit()
+
+    # !Attention! add welcome Message with gives back Object
+
+
 def __menu__():
     # list which defines the scope of values
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
@@ -53,7 +63,7 @@ class User(Base):
 class EncryptionType(Base):
     __tablename__ = 'encryption_type'
     id = Column(Integer, primary_key=True)
-    type = Column(String(30), nullable=False)
+    type = Column(String(30), nullable=False, unique=True)
 
 
 class EncryptedString(Base):
@@ -84,6 +94,9 @@ if __name__ == "__main__":
     # Opens Session
     Session = sessionmaker(engine)
     session = Session()
+
+    # starts login process
+    __startup__(session)
 
     # opens the menu
     __menu__()

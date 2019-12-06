@@ -3,21 +3,19 @@ from userinput import offset
 
 
 class Cesar(object):
-    def __init__(self):
+    def __init__(self, list_of_characters):
         print('You are using the Cesar encryption')
-        self.offsetFactor = offset.get_offset(input("Please choose an offset factor:"))
+        self.offsetFactor = offset.get_offset(input("Please choose an offset factor: "))
         print('Your offset factor is:', self.offsetFactor)
 
         output = ''
-        list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-        while True:
-            text_from_user = input('Type the text you want to encrypt:')
+        # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
-            for letter in text_from_user:
-                output = output + self.encoder(self.offsetFactor, letter, list_of_characters)
+        text_from_user = input('Type the text you want to encrypt:')
+        for letter in text_from_user:
+            output = output + self.encoder(self.offsetFactor, letter, list_of_characters)
 
-            print(output)
-            output = ''
+        print(output)
 
     def encoder(self, offset_factor, text, character_list):
         global x

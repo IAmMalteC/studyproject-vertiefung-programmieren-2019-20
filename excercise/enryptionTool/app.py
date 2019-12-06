@@ -2,21 +2,27 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+import string
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
-
+def __startup__():
+    print('LOGIN')
+    username = input('Please enter your Username: ')
 def __menu__():
-    print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
+    # list which defines the scope of values
+    list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
     while True:
-        text = input('Please choose a value and press Enter:')
+        print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
+
+        text = input('Please choose a value and press Enter: ')
         # Cesar Encryption
         if text == '1':
-            Cesar()
+            Cesar(list_of_characters)
         # Mono alphabetic substitution
         elif text == '2':
-            MonoAlphabetic()
+            MonoAlphabetic(list_of_characters)
         # About page
         elif text == '3':
             print('This is a basic encryption tool')

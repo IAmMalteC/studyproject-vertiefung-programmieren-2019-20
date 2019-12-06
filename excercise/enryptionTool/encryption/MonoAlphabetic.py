@@ -2,21 +2,19 @@ import string
 
 
 class MonoAlphabetic:
-    def __init__(self):
+    def __init__(self, list_of_characters):
         print('You are using the Mono alphabetic encryption')
 
         output = ''
-        list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+        # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         list_of_characters_reverse = self.reverse_text(list_of_characters)
 
-        while True:
-            text_from_user = input('Type the text you want to encrypt:')
+        text_from_user = input('Type the text you want to encrypt: ')
 
-            for letter in text_from_user:
-                output = output + self.encoder(letter, list_of_characters, list_of_characters_reverse)
+        for letter in text_from_user:
+            output = output + self.encoder(letter, list_of_characters, list_of_characters_reverse)
 
-            print(output)
-            output = ''
+        print(output)
 
     def encoder(self, text, list_original, list_reverse):
         if text == ' ':

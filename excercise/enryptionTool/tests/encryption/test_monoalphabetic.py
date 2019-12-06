@@ -11,6 +11,7 @@ class TestMonoAlphabetic(TestCase):
     def test_encoder(self):
         """
         Tests the encoding
+        call with reduced value range
         """
         text_data = "A"
         result = MonoAlphabetic.encoder(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
@@ -19,6 +20,7 @@ class TestMonoAlphabetic(TestCase):
     def test_reverse_text(self):
         """
         Tests it the text is reversed
+        call with reduced value range
         """
         text_data = "abcd"
         result = MonoAlphabetic.reverse_text(text_data)

@@ -4,23 +4,23 @@ from unittest import TestCase
 from encryption.Monoalphabetic import Monoalphabetic
 
 class TestMonoalphabetic(TestCase):
-    listOfCharacters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-    listOfCharactersReverse = Monoalphabetic.reverse_text(listOfCharacters)
+    list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+    list_of_characters_reverse = Monoalphabetic.reverse_text(list_of_characters)
 
-    def test_encrypter(self):
+    def test_encoder(self):
         """
         Tests the encoding
         """
-        textData = "A"
-        result = Monoalphabetic.encrypter(self, textData, self.listOfCharacters, self.listOfCharactersReverse)
+        text_data = "A"
+        result = Monoalphabetic.encoder(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
         self.assertRegex(result, "~")
 
     def test_reverse_text(self):
         """
         Tests it the text is reversed
         """
-        textData = "abcd"
-        result = Monoalphabetic.reverse_text(textData)
+        text_data = "abcd"
+        result = Monoalphabetic.reverse_text(text_data)
         self.assertEqual(result,"dcba")
 
 if __name__ == '__main__':

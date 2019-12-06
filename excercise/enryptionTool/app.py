@@ -9,13 +9,13 @@ while True:
     # Cesar Encryption
     if text == '1':
         Cesar()
-    # Mono alphatic substition
+    # Mono alphabetic substitution
     elif text == '2':
         Monoalphabetic()
     # About page
     elif text == '3':
         print('This is a basic encryption tool')
-    # Quit programm
+    # Quit program
     elif text == '4' or text == "exit":
         print('Goodbye')
         break

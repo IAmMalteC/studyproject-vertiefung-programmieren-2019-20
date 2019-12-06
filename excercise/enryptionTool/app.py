@@ -9,16 +9,16 @@ from encryption.MonoAlphabetic import MonoAlphabetic
 
 def __startup__(db_session):
     print('LOGIN')
-    username = input('Please enter your Username: ')
-    user = User(username.lower())
+    username = input('Please enter your Username: ').lower()
+    user = User(username)
     # checks if the user already exists (Wraps a .exists() query in another session.query()
     # with a scalar() call at the end.
     exists = db_session.query(db_session.query(User).filter_by(name=username).exists()).scalar()
-    if exists is False: #.scalar() is not None:
+    if exists is False:
         db_session.add(user)
         db_session.commit()
-
-    # !ATTENTION! NOT SURE if "Login" is working. Because it cannot show id of already existing users
+    else:
+        user = db_session.query(User).filter_by(name=username).first()
 
     # Welcome message
     print("Welcome " + User.__repr__(user))

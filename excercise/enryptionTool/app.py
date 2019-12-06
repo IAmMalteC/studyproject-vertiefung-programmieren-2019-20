@@ -36,12 +36,12 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True, nullable=False)
 
-    # # add to the others ? !Attention!
-    # def __init__(self, name: str):
-    #     self.name = name
-    #
-    # def __repr__(self):
-    #     return "User [id: {0}, name: {1}]".format(self.id, self.name)
+    # add to the others ? !Attention!
+    def __init__(self, name: str):
+        self.name = name
+
+    def __repr__(self):
+        return "User [id: {0}, name: {1}]".format(self.id, self.name)
 
 
 class EncryptionType(Base):
@@ -57,15 +57,16 @@ class EncryptedString(Base):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     encryption_type_id = Column(Integer, ForeignKey(EncryptionType.id), nullable=False)
 
+
 class CesarEncryption(Base):
     __tablename__ = 'cesar_encryption'
-    id = Column(Integer, primary_key=True) # Fk is missing !Attention!
+    id = Column(Integer, ForeignKey(EncryptionType.id), primary_key=True)
     offset = Column(Integer)
 
 
 class MonoAlphabeticSubstitution(Base):
     __tablename__ = 'mono_alphabetic_substitution'
-    id = Column(Integer, primary_key=True) # FK is missing !Attention!
+    id = Column(Integer, ForeignKey(EncryptionType.id), primary_key=True)
 
 
 if __name__ == "__main__":

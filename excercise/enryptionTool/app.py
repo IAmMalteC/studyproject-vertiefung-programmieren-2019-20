@@ -1,14 +1,14 @@
 """from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine"""
+from sqlalchemy.orm import sessionmaker"""
+from sqlalchemy import create_engine
 import sqlite3 as lite
 from sqlite3 import Error
 from encryption.Cesar import Cesar
 from encryption.Monoalphabetic import Monoalphabetic
 
 
-def create_connection(db_file):
+'''def create_connection(db_file):
     """ create a database connection to a SQLite database """
     connection = None
     try:
@@ -19,7 +19,7 @@ def create_connection(db_file):
     finally:
         if connection:
             connection.close()
-
+'''
 
 def __menu__():
     print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
@@ -44,5 +44,6 @@ def __menu__():
 
 
 if __name__ == "__main__":
-    create_connection(r"./database/datalog.db")
+    engine = create_engine("sqlite://database/datalog.db", echo = True) #= r"./database/datalog.db"
+    #create_connection(database)
     __menu__()

@@ -12,10 +12,10 @@ while True:
     # Mono alphatic substition
     elif text == '2':
         Monoalphabetic()
-    #About page
+    # About page
     elif text == '3':
         print('This is a basic encryption tool')
-    #Quit programm
+    # Quit programm
     elif text == '4' or text == "exit":
         print('Goodbye')
         break

@@ -1,7 +1,7 @@
 import string
 
 
-class Monoalphabetic:
+class MonoAlphabetic:
     def __init__(self):
         print('You are using the Mono alphabetic encryption')
 

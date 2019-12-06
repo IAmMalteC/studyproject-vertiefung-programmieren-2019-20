@@ -1,25 +1,10 @@
-"""from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker"""
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-import sqlite3 as lite
-from sqlite3 import Error
 from encryption.Cesar import Cesar
-from encryption.Monoalphabetic import Monoalphabetic
+from encryption.MonoAlphabetic import MonoAlphabetic
 
-
-'''def create_connection(db_file):
-    """ create a database connection to a SQLite database """
-    connection = None
-    try:
-        connection = lite.connect(db_file)
-        print(lite.version)
-    except Error as e:
-        print(e)
-    finally:
-        if connection:
-            connection.close()
-'''
 
 def __menu__():
     print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
@@ -31,7 +16,7 @@ def __menu__():
             Cesar()
         # Mono alphabetic substitution
         elif text == '2':
-            Monoalphabetic()
+            MonoAlphabetic()
         # About page
         elif text == '3':
             print('This is a basic encryption tool')
@@ -43,7 +28,41 @@ def __menu__():
             print('You choose a non-valid value.\nPlease try again.')
 
 
+Base = declarative_base()
+
+
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), unique=True, nullable=False)
+
+
+class EncryptionType(Base):
+    __tablename__ = 'encryption_type'
+    id = Column(Integer, primary_key=True)
+    type = Column(String(30), nullable=False)
+
+
+class EncryptedString(Base):
+    __tablename__ = 'encrypted_string'
+    id = Column(Integer, primary_key=True)
+    string = Column(String(256), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
+    encryption_type_id = Column(Integer, ForeignKey("encryption_type.encryption_type.id"), nullable=False)
+
+class CesarEncryption(Base):
+    __tablename__ = 'cesar_encryption'
+    id = Column(Integer, primary_key=True)
+    offset = Column(Integer)
+
+
+class MonoAlphabeticSubstitution(Base):
+    __tablename__ = 'mono_alphabetic_substitution'
+    id = Column(Integer, primary_key=True)
+
+
 if __name__ == "__main__":
-    engine = create_engine("sqlite://database/datalog.db", echo = True) #= r"./database/datalog.db"
-    #create_connection(database)
+    database = 'sqlite:///database/datalog.db'
+    Base.metadata.create_all(database)
+    engine = create_engine(database)
     __menu__()

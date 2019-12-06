@@ -1,19 +1,19 @@
 import unittest
 import string
 from unittest import TestCase
-from encryption.Monoalphabetic import Monoalphabetic
+from encryption.MonoAlphabetic import MonoAlphabetic
 
 
-class TestMonoalphabetic(TestCase):
+class TestMonoAlphabetic(TestCase):
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-    list_of_characters_reverse = Monoalphabetic.reverse_text(list_of_characters)
+    list_of_characters_reverse = MonoAlphabetic.reverse_text(list_of_characters)
 
     def test_encoder(self):
         """
         Tests the encoding
         """
         text_data = "A"
-        result = Monoalphabetic.encoder(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
+        result = MonoAlphabetic.encoder(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
         self.assertRegex(result, "~")
 
     def test_reverse_text(self):
@@ -21,7 +21,7 @@ class TestMonoalphabetic(TestCase):
         Tests it the text is reversed
         """
         text_data = "abcd"
-        result = Monoalphabetic.reverse_text(text_data)
+        result = MonoAlphabetic.reverse_text(text_data)
         self.assertEqual(result, "dcba")
 
 

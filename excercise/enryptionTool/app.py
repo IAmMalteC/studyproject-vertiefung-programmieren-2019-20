@@ -36,6 +36,13 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True, nullable=False)
 
+    # # add to the others ? !Attention!
+    # def __init__(self, name: str):
+    #     self.name = name
+    #
+    # def __repr__(self):
+    #     return "User [id: {0}, name: {1}]".format(self.id, self.name)
+
 
 class EncryptionType(Base):
     __tablename__ = 'encryption_type'
@@ -47,22 +54,29 @@ class EncryptedString(Base):
     __tablename__ = 'encrypted_string'
     id = Column(Integer, primary_key=True)
     string = Column(String(256), nullable=False)
-    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
-    encryption_type_id = Column(Integer, ForeignKey("encryption_type.encryption_type.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    encryption_type_id = Column(Integer, ForeignKey(EncryptionType.id), nullable=False)
 
 class CesarEncryption(Base):
     __tablename__ = 'cesar_encryption'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True) # Fk is missing !Attention!
     offset = Column(Integer)
 
 
 class MonoAlphabeticSubstitution(Base):
     __tablename__ = 'mono_alphabetic_substitution'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True) # FK is missing !Attention!
 
 
 if __name__ == "__main__":
+    # Database creation
     database = 'sqlite:///database/datalog.db'
-    Base.metadata.create_all(database)
     engine = create_engine(database)
+    # Creates Tables
+    Base.metadata.create_all(engine)
+    # Opens Session
+    Session = sessionmaker(engine)
+    session = Session()
+
+    # opens the menu
     __menu__()

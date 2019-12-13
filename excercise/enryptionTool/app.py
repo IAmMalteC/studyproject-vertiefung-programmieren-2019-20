@@ -5,6 +5,10 @@ from encryption.MonoAlphabetic import MonoAlphabetic
 
 
 def __startup__(db_session):
+    # Saves the possible types of encryption
+    InsertIntoDatabase.insert_value(db_session, 'Cesar')
+    InsertIntoDatabase.insert_value(db_session, 'MonoAlphabetic')
+
     print('LOGIN')
     username = input('Please enter your Username: ').lower()
     user = InsertIntoDatabase.insert_user_check_exists(db_session, username)
@@ -12,7 +16,7 @@ def __startup__(db_session):
     print("Welcome " + DatabaseCreation.User.__repr__(user))
 
 
-def __menu__():
+def __menu__(db_session):
     # list which defines the scope of values
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
@@ -46,4 +50,4 @@ if __name__ == "__main__":
     __startup__(session)
 
     # opens the menu
-    __menu__()
+    __menu__(session)

@@ -1,18 +1,24 @@
-import database
-from sqlalchemy.orm import sessionmaker
+from database import DatabaseCreation
+
+
+def insert_value(db_session, value):
+    if value == 'Cesar' or value == 'MonoAlphabetic':
+        new_data_base_input = DatabaseCreation.EncryptionType(value)
+    db_session.add(new_data_base_input)
+    db_session.commit()
 
 
 def insert_user_check_exists(db_session, value):
-    user = database.DatabaseCreation.User(value)
+    user = DatabaseCreation.User(value)
 
     # checks if the user already exists (Wraps a .exists() query in another session.query()
     # with a scalar() call at the end.
-    exists = db_session.query(db_session.query(database.DatabaseCreation.User).filter_by(name=value).exists()).scalar()
+    exists = db_session.query(db_session.query(DatabaseCreation.User).filter_by(name=value).exists()).scalar()
     if exists is False:
         db_session.add(user)
         db_session.commit()
     else:
-        user = db_session.query(database.DatabaseCreation.User).filter_by(name=value).first()
+        user = db_session.query(DatabaseCreation.User).filter_by(name=value).first()
     return user
 
 

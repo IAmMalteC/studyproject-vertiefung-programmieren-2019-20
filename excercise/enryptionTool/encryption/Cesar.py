@@ -1,21 +1,26 @@
-import string
+from database import DatabaseCreation, InsertIntoDatabase
 from userinput import offset
 
 
 class Cesar(object):
-    def __init__(self, list_of_characters):
+    def __init__(self,db_session, username, list_of_characters):
         print('You are using the Cesar encryption')
-        self.offsetFactor = offset.get_offset(input("Please choose an offset factor: "))
-        print('Your offset factor is:', self.offsetFactor)
+        offset_factor = offset.get_offset(input("Please choose an offset factor: "))
+        print('Your offset factor is:', offset_factor)
+        InsertIntoDatabase.insert_cesar(db_session, offset_factor.__int__(), 1)
 
         output = ''
         # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
         text_from_user = input('Type the text you want to encrypt:')
         for letter in text_from_user:
-            output = output + self.encoder(self.offsetFactor, letter, list_of_characters)
+            output = output + self.encoder(offset_factor, letter, list_of_characters)
 
         print(output)
+        # 1 is always MonoalphabeticSubstitution
+        user = db_session.query(DatabaseCreation.User).filter(DatabaseCreation.User.name == username).first()
+        encoding = db_session.query(DatabaseCreation.EncodingType).filter(DatabaseCreation.EncodingType.id == 1).first()
+        InsertIntoDatabase.insert_encodedstring(db_session, output, user.id, encoding.id)
 
     def encoder(self, offset_factor, text, character_list):
         global x

@@ -6,17 +6,23 @@ from encryption.MonoAlphabetic import MonoAlphabetic
 
 def __startup__(db_session):
     # Saves the possible types of encryption
-    InsertIntoDatabase.insert_encryption_type(db_session, 'Cesar')
-    InsertIntoDatabase.insert_encryption_type(db_session, 'MonoAlphabetic')
+    # db_session.add_all(
+    #     cesar=DatabaseCreation.encoding_type('Cesar'),
+    #     mono=DatabaseCreation.encoding_type('MonoAlphabetic')
+    # )
+    # db_session.commit()
+    InsertIntoDatabase.insert_encoding_type(db_session, 'Cesar')
+    InsertIntoDatabase.insert_encoding_type(db_session, 'MonoAlphabetic')
 
     print('LOGIN')
     username = input('Please enter your Username: ').lower()
     user = InsertIntoDatabase.insert_user_check_exists(db_session, username)
     # Welcome message
     print("Welcome " + DatabaseCreation.User.__repr__(user))
+    return username
 
 
-def __menu__(db_session):
+def __menu__(db_session, username):
     # list which defines the scope of values
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
@@ -26,10 +32,10 @@ def __menu__(db_session):
         text = input('Please choose a value and press Enter: ')
         # Cesar Encryption
         if text == '1':
-            Cesar(list_of_characters)
+            Cesar(db_session, username, list_of_characters)
         # Mono alphabetic substitution
         elif text == '2':
-            MonoAlphabetic(list_of_characters)
+            MonoAlphabetic(db_session, username, list_of_characters)
         # About page
         elif text == '3':
             print('This is a basic encryption tool')
@@ -47,7 +53,7 @@ if __name__ == "__main__":
     session = DatabaseCreation.open_session(engine)
 
     # starts login process
-    __startup__(session)
+    username = __startup__(session)
 
     # opens the menu
-    __menu__(session)
+    __menu__(session, username)

@@ -6,8 +6,8 @@ from encryption.MonoAlphabetic import MonoAlphabetic
 
 def __startup__(db_session):
     # Saves the possible types of encryption
-    InsertIntoDatabase.insert_value(db_session, 'Cesar')
-    InsertIntoDatabase.insert_value(db_session, 'MonoAlphabetic')
+    InsertIntoDatabase.insert_encryption_type(db_session, 'Cesar')
+    InsertIntoDatabase.insert_encryption_type(db_session, 'MonoAlphabetic')
 
     print('LOGIN')
     username = input('Please enter your Username: ').lower()

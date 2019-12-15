@@ -28,6 +28,6 @@ class MonoAlphabetic(object):
             x = list_reverse[list_original.index(text)]
         return x
 
-    def reverse_text(self, text):
+    def reverse_text(text):
         # [::-1] slices the string by step 1 and reverses the input
         return text[::-1]

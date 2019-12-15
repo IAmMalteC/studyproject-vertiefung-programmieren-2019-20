@@ -13,7 +13,7 @@ class TestMonoAlphabetic(TestCase):
         Tests the encoding
         call with reduced value range
         """
-        text_data = "A"
+        text_data = "a"
         result = MonoAlphabetic.encoder(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
         self.assertRegex(result, "~")
 

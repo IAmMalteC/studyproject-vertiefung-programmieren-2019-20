@@ -17,6 +17,9 @@ class MonoAlphabetic(object):
 
         print(output)
         # 2 is always MonoalphabeticSubstitution
+        # zurzeit wird nur die Art der Verschlüsselung gespeichert und keine direkte Verbindung zum Cesar geschaffen.
+        # So hatte ich die Aufgabe verstanden. Aber nochmal Robert fragen, ob das so stimmt. Da es besser wäre den
+        # OffsetFactor auch gebrauchen zu können.
         user = db_session.query(DatabaseCreation.User).filter(DatabaseCreation.User.name == username).first()
         encoding = db_session.query(DatabaseCreation.EncodingType).filter(DatabaseCreation.EncodingType.id == 2).first()
         InsertIntoDatabase.insert_encodedstring(db_session, output, user.id, encoding.id)

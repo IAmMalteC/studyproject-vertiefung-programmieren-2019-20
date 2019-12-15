@@ -6,11 +6,6 @@ from encryption.MonoAlphabetic import MonoAlphabetic
 
 def __startup__(db_session):
     # Saves the possible types of encryption
-    # db_session.add_all(
-    #     cesar=DatabaseCreation.encoding_type('Cesar'),
-    #     mono=DatabaseCreation.encoding_type('MonoAlphabetic')
-    # )
-    # db_session.commit()
     InsertIntoDatabase.insert_encoding_type(db_session, 'Cesar')
     InsertIntoDatabase.insert_encoding_type(db_session, 'MonoAlphabetic')
 

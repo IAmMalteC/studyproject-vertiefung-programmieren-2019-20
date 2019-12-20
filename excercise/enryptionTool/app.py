@@ -1,23 +1,21 @@
 import string
 from database import DatabaseCreation, InsertIntoDatabase
+from database.InsertIntoDatabase import InsertIntoDatabase
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
 
-def __startup__(db_session):
-    # Saves the possible types of encryption
-    InsertIntoDatabase.insert_encoding_type(db_session, 'Cesar')
-    InsertIntoDatabase.insert_encoding_type(db_session, 'MonoAlphabetic')
-
+def __startup__():
     print('LOGIN')
     username = input('Please enter your Username: ').lower()
-    user = InsertIntoDatabase.insert_user_check_exists(db_session, username)
+    insertIntoDatabase = InsertIntoDatabase()
+    user = insertIntoDatabase.insert_user_check_exists(username)
     # Welcome message
     print("Welcome " + DatabaseCreation.User.__repr__(user))
     return username
 
 
-def __menu__(db_session, username):
+def __menu__(username):
     # list which defines the scope of values
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 
@@ -27,10 +25,10 @@ def __menu__(db_session, username):
         text = input('Please choose a value and press Enter: ')
         # Cesar Encryption
         if text == '1':
-            Cesar(db_session, username, list_of_characters)
+            Cesar(username, list_of_characters)
         # Mono alphabetic substitution
         elif text == '2':
-            MonoAlphabetic(db_session, username, list_of_characters)
+            MonoAlphabetic(username, list_of_characters)
         # About page
         elif text == '3':
             print('This is a basic encryption tool')
@@ -43,12 +41,8 @@ def __menu__(db_session, username):
 
 
 if __name__ == "__main__":
-    # Database creation and create Tables
-    engine = DatabaseCreation.create_database()
-    session = DatabaseCreation.open_session(engine)
-
     # starts login process
-    username = __startup__(session)
+    username = __startup__()
 
     # opens the menu
-    __menu__(session, username)
+    __menu__(username)

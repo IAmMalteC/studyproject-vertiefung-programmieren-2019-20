@@ -1,0 +1,59 @@
+{% extends "basetemplate.html" %}
+{% block title %}Verschlüsselung{% endblock %}
+{% block content %}
+{#<!-- Welcomes the logged User <-- maybe just for testing -->
+<!-- {% if current_user.is_authenticated %}
+  Hi {{ current_user.name }}!
+{% endif %} -->}#}
+    
+<div class="formwrapper">
+    <h1 class="title">Verschl&uuml;sselung</h1>
+    <form action="/" method="POST">
+        <div class="form-field">{{ form.encryptiontype.label }} {{ form.encryptiontype }}
+            {% if form.encryptiontype.errors %}
+            <ul class="errors">
+                {% for error in form.encryptiontype.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-field">{{ form.offset.label }} {{ form.offset }}
+            {% if form.offset.errors %}
+            <ul class="errors">
+                {% for error in form.offset.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-field">{{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
+            {% if form.string_to_encrypt.errors %}
+            <ul class="errors">
+                {% for error in form.string_to_encrypt.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {{ form.submit }}
+    </form>
+</div>    
+<!-- <div>
+    <input type="radio" name="encryptiontype" id="cesar" value="cesar" checked>C&auml;sar Verschl&uuml;sselung</br>
+    <input type="radio" name="encryptiontype" id="mono" value="mono">Monoalphabetische Substitution
+</div>
+<div>
+    -- TODO Wird nur bei cesar angezeigt --
+    <label for="offset">Offset Faktor: </label>
+    <input type="number" name="offset" id="offset">
+</div>
+<div>    
+    -- TODO mit regex gülitige zeichen abfangen --
+    <label for="stringToEncrypt">Zu verschl&uuml;sselnder Text: </label>
+    <textarea name="" id="stringToEncrypt" cols="40" rows="4"></textarea>
+</div>
+<div>
+    <input type="submit" value="Verschl&uuml;sseln und speichern">
+</div> -->
+{% endblock %}

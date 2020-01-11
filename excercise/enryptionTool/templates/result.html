@@ -1,0 +1,30 @@
+{% extends "basetemplate.html" %}
+{% block title %}Resultat{% endblock %}
+{% block content %}
+<div class="formwrapper">
+    <h1 class="title">Verschlüsselter Text</h1>
+    <form action="/" method="POST">
+        <div class="form-field">{{ form.unencryptedString.label }} {{ form.unencryptedString }}
+            {% if form.unencryptedString.errors %}
+            <ul class="errors">
+                {% for error in form.unencryptedString.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-field">{{ form.encryptedString.label }} {{ form.encryptedString }}
+            {% if form.encryptedString.errors %}
+            <ul class="errors">
+                {% for error in form.encryptedString.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </form>
+</div>
+<div>
+    <a href="/encryption">Nochmal</a>
+</div>
+{% endblock %}

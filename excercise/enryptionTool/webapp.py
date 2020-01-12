@@ -1,44 +1,82 @@
-from flask import Flask, render_template, session, redirect, url_for, escape, request
+import string
+from flask import Flask, render_template, session, redirect, url_for, escape, request, make_response
+from sqlalchemy.orm import relationship
 from forms import LoginForm, EncryptionForm, ResultForm
-from flask_login import LoginManager
-# THIS WEBAPP IS BUILD BY THE HELP OF https://hackersandslackers.com/your-first-flask-application
+from flask_sqlalchemy import SQLAlchemy
+from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
+from encryption import Cesar, MonoAlphabetic
+
 webapp = Flask(__name__,
                template_folder="templates",
                static_folder="static")
-# Session from = https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions
-# Secret Key for session
-webapp.secret_key = b'ayTAyD2feEGDS6P9eZwj'
+# Storing our configuration settings in config.py
+webapp.config.from_object('config.Config')
 
-# # Login from https://flask-login.readthedocs.io/en/latest/#flask_login.LoginManager
-# # Login
-# login_manager = LoginManager()
-# login_manager.init_app(webapp)
-# @login_manager.user_loader()
-# def load_user(user_id):
-#     return User.get(user_id)
+db = SQLAlchemy(webapp)
+
+
+@webapp.before_first_request
+def setup():
+    # to add the relationship
+    User_TB.encrypted_string = relationship("EncodedString", order_by=EncodedString_TB.id, back_populates="userstr")
+    EncryptionType_TB.encrypted_string = relationship("EncodedString", order_by=EncodedString_TB.id, back_populates="encryptiontyperelation")
+    # creates the table
+    Base.metadata.create_all(bind=db.engine)
 
 
 # Routing
 @webapp.route("/login", methods=['GET', 'POST'])
 @webapp.route("/", methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        username = username.lower()
+        existing_user = db.session.query(User_TB).filter(User_TB.name == username).first()
+        if existing_user:
+            return redirect("/encryption")  # hier vielleicht den User/namen übergeben
+        new_user = User_TB(username)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect("/encryption")  # hier vielleicht den User/namen übergeben
+    # if GET:
     form = LoginForm()
     if form.validate_on_submit():
         return redirect(url_for('success'))
     return render_template('login.html', form=form)
-    # # / is in general the indexsite, but we shall start with a login. So here we go.
-    # if request.method == 'POST':
-    #     session['username'] = request.form['username']
-    #     return redirect(url_for('login'))
-    # return render_template('login.html')
 
 
-@webapp.route("/encryption", methods=['GET', 'POST'])
-# @login_required
+# list which defines the scope of values
+list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+
+
+@webapp.route("/encryption/<username>", methods=['GET', 'POST'])
 def display_encryption_page():
-    # if 'username' in session:
-    #     return 'Logged in as %s' % escape(session['username'])
-    # return 'You are not logged in'
+    if request.method == 'POST':
+        string_to_encrypt = request.form['string_to_encrypt']
+        encryptiontype = request.form['encryptiontype']
+        new_encodedstring = ''
+        if encryptiontype == 'cesar':
+            offset = request.form['offset']
+            for letter in string_to_encrypt:
+                new_encodedstring = new_encodedstring + Cesar.encrypter(offset, letter, list_of_characters)
+            new_cesar = Cesar_TB(offset)
+            db.session.add(new_cesar)
+        else:
+            new_mono = MonoAlphabeticSubstitution_TB()
+            db.session.add(new_mono)
+            list_of_characters_reverse = MonoAlphabetic.reverse_text(list_of_characters)
+            for letter in new_encodedstring:
+                new_encodedstring = new_encodedstring + MonoAlphabetic.encrypter(letter, list_of_characters, list_of_characters_reverse)
+
+        # TODO Get the username from Login
+        new_string = EncodedString_TB(new_encodedstring, username, encryptiontype)
+        # if that is not working add:
+        #   EncodedString_TB(new_encodedstring, username, "monoalphabeticsubstitution")
+        #   EncodedString_TB(new_encodedstring ,.., "cesar")
+        db.session.add(new_string)
+        db.session.commit()
+        return redirect("/result")
+    # if GET:
     form = EncryptionForm()
     if form.validate_on_submit():
         return redirect(url_for('success'))
@@ -46,21 +84,16 @@ def display_encryption_page():
 
 
 @webapp.route("/result", methods=['GET', 'POST'])
-# @login_required
 def display_result_page():
-    form = ResultForm()
-    if form.validate_on_submit():
-        return redirect(url_for('success'))
-    return render_template('result.html', form=form)
+    # TODO Print the encrypted stuff from /encryption, use same method as for the username
+    if request.method == 'POST':
+        form = ResultForm()
+        if form.validate_on_submit():
+            return redirect(url_for('success'))
+        return render_template('result.html', form=form)
+    return redirect("/login")
 
 
-# @webapp.route('/logout') # gibt es noch nicht als html seite
-# def logout():
-#     # remove the username from the session if it's there
-#     session.pop('username', None)
-#     return redirect(url_for('login'))
-
-
-# Just for debuging -- REMOVE before delivering
+# Just for debugging!
 if __name__ == "__main__":
     webapp.run(debug=True)

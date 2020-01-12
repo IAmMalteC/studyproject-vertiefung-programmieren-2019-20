@@ -1,3 +1,4 @@
+# This is the console app
 import string
 from database import DatabaseCreation, InsertIntoDatabase
 from database.InsertIntoDatabase import InsertIntoDatabase
@@ -11,7 +12,7 @@ def __startup__():
     insertIntoDatabase = InsertIntoDatabase()
     user = insertIntoDatabase.insert_user_check_exists(username)
     # Welcome message
-    print("Welcome " + DatabaseCreation.User.__repr__(user))
+    print("Welcome " + DatabaseCreation.User_TB.__repr__(user))
     return username
 
 

@@ -8,8 +8,15 @@ class Config:
     """Sets Flask configuartion variables"""
     Testing = True
     DEBUG = True
-    SECRET_KEY = b'ayTAyD2feEGDS6P9eZwj'
 
     # Database
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database/datalog.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Session
+    SECRET_KEY = b'ayTAyD2feEGDS6P9eZwj'
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_DIR = './flask_session'
+    SESSION_PERMANENT = False
+    SESSION_FILE_THRESHOLD = 100
+

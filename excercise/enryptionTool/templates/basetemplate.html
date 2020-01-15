@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}" />
-        <title>{% block title %}{% endblock %}</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% block head %} <!-- Maybe that should be on line 4-->
-        {% endblock %}
-    </head>
+
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- To add head data on the html pages -->
+    {% block head %}
+    <!-- Maybe that should be on line 4-->
+    {% endblock %}
+    <!-- to give some user feedback -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</head>
+
 </html>
+
 <body>
     <header>
 
@@ -20,4 +35,5 @@
     <footer>
         <p>&copy; Copyright 2020 by Problemsolver</p>
     </footer>
+    <script type="text/javascript" src="{{url_for('static', filename='script.js') }}"></script>
 </body>

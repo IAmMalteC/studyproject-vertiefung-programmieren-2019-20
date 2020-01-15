@@ -4,7 +4,7 @@
     <meta name="offsetStatus" content="{{ offset }}">
 {% endblock %}
 {% block content %}
-<div class="formwrapper">
+<div class="formwrapper" onload="checkIfCesarWasUsedForEncryption()">
     <h1 class="title">Verschl&uuml;sselter Text</h1>
     <p>Verschl&uuml;sselungstyp: {{ encryptiontype }}</p>
     <p id="offsetResult">Offsetfaktor: {{ offset }} </p>

@@ -9,7 +9,7 @@
 <div class="formwrapper">
     <h1 class="title">Verschl&uuml;sselung</h1>
     <form action="/encryption" method="POST">
-        <div class="form-field" id='encryptiontype'>{{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibilty()"}) }}
+        <div class="form-field" id='encryptiontype'>{{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
             {% if form.encryptiontype.errors %}
             <ul class="errors">
                 {% for error in form.encryptiontype.errors %}

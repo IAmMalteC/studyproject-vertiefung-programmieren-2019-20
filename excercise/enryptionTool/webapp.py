@@ -18,8 +18,9 @@ db = SQLAlchemy(webapp)
 sess = Session(webapp)
 
 # TODO add login protection, so that the pages just can be accesed as an active user
-# TODO add Validation/Requirment of text fields
+# TODO add Validation/Requirment to forms
 # TODO add randomNumberGeneartor if offset is empty/not a int number and cesar is selected
+# TODO make require unique names
 
 @webapp.before_first_request
 def setup():

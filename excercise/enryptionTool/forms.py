@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
 
 class EncryptionForm(FlaskForm):
     """Encryption Form"""
-    encryptiontype = RadioField('Verschlüsselungstyp', [DataRequired()], choices=[('cesar', 'Cäsar Verschlüsselung'), ('mono', 'Monoalphabetische Substitution')], default='cesar')
+    encryptiontype = RadioField('Verschlüsselungstyp', [DataRequired()], choices=[('cesar', 'Cäsar Verschlüsselung'), ('monoalphabeticsubstitution', 'Monoalphabetische Substitution')], default='cesar')
     offset = IntegerField('Offset Faktor')
     string_to_encrypt = TextAreaField('Zu verschlüsselnder Text', [DataRequired()])
     submit = SubmitField('Verschlüsseln und speichern')

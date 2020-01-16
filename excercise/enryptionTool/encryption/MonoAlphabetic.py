@@ -14,18 +14,19 @@ class MonoAlphabetic(object):
         text_from_user = input('Type the text you want to encrypt: ')
 
         for letter in text_from_user:
-            output = output + self.encrypter(letter, list_of_characters, list_of_characters_reverse)
+            output = output + encrypter(letter, list_of_characters, list_of_characters_reverse)
 
         # save string
         insert_encryptedstring(output, username, "monoalphabeticsubstitution")
         print(output)
 
-    def encrypter(self, text, list_original, list_reverse):
-        if text == ' ':
-            x = text
-        else:
-            x = list_reverse[list_original.index(text)]
-        return x
+
+def encrypter(text, list_original, list_reverse):
+    if text == ' ':
+        x = text
+    else:
+        x = list_reverse[list_original.index(text)]
+    return x
 
 
 def reverse_text(text):

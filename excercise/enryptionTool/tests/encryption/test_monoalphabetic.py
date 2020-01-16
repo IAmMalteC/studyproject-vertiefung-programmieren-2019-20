@@ -1,7 +1,7 @@
 import unittest
 import string
 from unittest import TestCase
-from encryption.MonoAlphabetic import MonoAlphabetic, reverse_text
+from encryption.MonoAlphabetic import encrypter, reverse_text
 
 
 class TestMonoAlphabetic(TestCase):
@@ -15,7 +15,7 @@ class TestMonoAlphabetic(TestCase):
         call with reduced value range
         """
         text_data = "a"
-        result = MonoAlphabetic.encrypter(self, text_data, self.list_of_characters, self.list_of_characters_reverse)
+        result = encrypter(text_data, self.list_of_characters, self.list_of_characters_reverse)
         self.assertRegex(result, "~")
 
     def test_reverse_text(self):

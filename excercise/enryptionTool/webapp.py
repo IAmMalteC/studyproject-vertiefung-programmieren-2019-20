@@ -17,6 +17,9 @@ webapp.config.from_object('config.Config')
 db = SQLAlchemy(webapp)
 sess = Session(webapp)
 
+# TODO add login protection, so that the pages just can be accesed as an active user
+# TODO add Validation/Requirment of text fields
+# TODO add randomNumberGeneartor if offset is empty/not a int number and cesar is selected
 
 @webapp.before_first_request
 def setup():
@@ -40,11 +43,11 @@ def login():
         session['current_user'] = str(username)
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
         if existing_user:
-            return redirect("/encryption")  # hier vielleicht den User/namen übergeben
+            return redirect("/encryption")
         new_user = User_TB(username)
         db.session.add(new_user)
         db.session.commit()
-        return redirect("/encryption")  # hier vielleicht den User/namen übergeben
+        return redirect("/encryption")
     # if GET:
     form = LoginForm()
     if form.validate_on_submit():
@@ -61,34 +64,36 @@ def display_encryption_page():
     if request.method == 'POST':
         string_to_encrypt = request.form['string_to_encrypt']
         encryptiontype = request.form['encryptiontype']
-        # save to session
-        session['encryptiontype'] = str(encryptiontype)
         new_encodedstring = ''
-        username = str(session['current_user'])
         if encryptiontype == 'cesar':
-            offset = request.form['offset']
+            offset = int(request.form['offset'])
             # save to session
             session['offset'] = str(offset)
             for letter in string_to_encrypt:
-                new_encodedstring = new_encodedstring + Cesar.encrypter(offset, letter, list_of_characters)
+                new_encodedstring += Cesar.encrypter(offset, letter, list_of_characters)
             new_cesar = Cesar_TB(offset)
             db.session.add(new_cesar)
+            db.session.commit()
         else:
             new_mono = MonoAlphabeticSubstitution_TB()
             db.session.add(new_mono)
+            db.session.commit()
             list_of_characters_reverse = MonoAlphabetic.reverse_text(list_of_characters)
-            for letter in new_encodedstring:
-                new_encodedstring = new_encodedstring + MonoAlphabetic.encrypter(letter, list_of_characters, list_of_characters_reverse)
+            for letter in string_to_encrypt:
+                new_encodedstring += MonoAlphabetic.encrypter(letter, list_of_characters, list_of_characters_reverse)
 
-        new_string = EncodedString_TB(new_encodedstring, username, encryptiontype)
-        # save to session
-        session['unencoded_string'] = str(string_to_encrypt)
-        session['encoded_string'] = str(new_encodedstring)
-        # if that is not working add:
-        #   EncodedString_TB(new_encodedstring, username, "monoalphabeticsubstitution")
-        #   EncodedString_TB(new_encodedstring ,.., "cesar")
+        # to get the encryptiontype from the DB -- It searches for the last item
+        type = db.session.query(EncryptionType_TB).filter(EncryptionType_TB.encryption_type_type == encryptiontype).order_by(EncryptionType_TB.encryption_type_id.desc()).first()
+        # to get the user from the DB
+        username = str(session['current_user'])
+        user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
+        new_string = EncodedString_TB(new_encodedstring, user.user_id, type.encryption_type_id)
         db.session.add(new_string)
         db.session.commit()
+        # save to session
+        session['encryptiontype'] = str(encryptiontype)
+        session['unencoded_string'] = str(string_to_encrypt)
+        session['encoded_string'] = str(new_encodedstring)
         return redirect("/result")
     # if GET:
     form = EncryptionForm()

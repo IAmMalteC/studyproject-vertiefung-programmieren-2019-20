@@ -22,10 +22,15 @@ class MonoAlphabetic(object):
 
 
 def encrypter(text, list_original, list_reverse):
-    if text == ' ':
-        x = text
-    else:
-        x = list_reverse[list_original.index(text)]
+    global x
+    try:
+        if text == ' ':
+            x = text
+        else:
+            x = list_reverse[list_original.index(text)]
+    except ValueError:
+        # if characters are used which are not in the character list, just print ?, not the best catch!
+        x = "¶"
     return x
 
 

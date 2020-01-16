@@ -1,17 +1,17 @@
 {% extends "basetemplate.html" %}
-{% block title %}Resultat{% endblock %}
+{% block title %}Result{% endblock %}
 {% block head %}
     <meta name="offsetStatus" content="{{ offset }}">
 {% endblock %}
 {% block content %}
 <div class="formwrapper">
-    <h1 class="title">Verschl&uuml;sselter Text</h1>
-    <p>Verschl&uuml;sselungstyp: {{ encryptiontype }}</p>
-    <p id="offsetResult">Offsetfaktor: {{ offset }} </p>
-    <p>Unverschl&uuml;sselter Text: {{unencoded_string}}</p>
-    <p>Verschl&uuml;sselter Text: {{encoded_string}}</p>
+    <h1 class="title">Your encrypted text</h1>
+    <p>Type of encryption: {{ encryptiontype }}</p>
+    <p id="offsetResult">Offsetfactor: {{ offset }} </p>
+    <p>Unencoded text: {{unencoded_string}}</p>
+    <p>Encoded text: {{encoded_string}}</p>
 </div>
 <div>
-    <a href="/encryption">Nochmal</a>
+    <a href="/encryption">One more time</a>
 </div>
 {% endblock %}

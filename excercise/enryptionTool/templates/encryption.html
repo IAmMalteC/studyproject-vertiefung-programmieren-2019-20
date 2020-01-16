@@ -1,13 +1,13 @@
 {% extends "basetemplate.html" %}
-{% block title %}Verschlüsselung{% endblock %}
+{% block title %}Encryption{% endblock %}
 {% block content %}
 <!-- Welcomes the logged User -->
 <div class="welcomebox">
-    <p>Willkommen {{ current_user }}!</p>
+    <p>Welcome {{ current_user }}!</p>
 </div>
     
 <div class="formwrapper">
-    <h1 class="title">Verschl&uuml;sselung</h1>
+    <h1 class="title">Encryption</h1>
     <form action="/encryption" method="POST">
         <div class="form-field" id='encryptiontype'>{{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
             {% if form.encryptiontype.errors %}
@@ -27,7 +27,13 @@
             </ul>
             {% endif %}
         </div>
-        <div class="form-field">{{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
+        <div class="form-field">
+            <div class="hint">
+                Just use following characters: a-z, A-Z, 0-9 oder &excl;&quot;&num;&dollar;&percnt;&amp;&apos;&lpar;&rpar;&ast;&plus;&comma;&#x2d;&period;&sol;&colon;&semi;&lt;&equals;&gt;&quest;&commat;&lsqb;&bsol;&rsqb;&Hat;&lowbar;&grave;&lcub;&verbar;&rcub;&#x7e;
+                </br>
+                If you are using other characters, they will be encrypted as &para;.
+            </div>
+            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
             {% if form.string_to_encrypt.errors %}
             <ul class="errors">
                 {% for error in form.string_to_encrypt.errors %}

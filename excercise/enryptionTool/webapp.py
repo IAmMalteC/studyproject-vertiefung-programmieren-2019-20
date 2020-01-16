@@ -1,12 +1,11 @@
 import string
-from flask import Flask, render_template, session, redirect, url_for, escape, request, make_response, flash
+from flask import Flask, render_template, session, redirect, request
 from flask_session import Session
-from sqlalchemy.orm import relationship
-from forms import LoginForm, EncryptionForm, ResultForm
 from flask_sqlalchemy import SQLAlchemy
-from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, \
-    EncryptionType_TB
+from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
 from encryption import Cesar, MonoAlphabetic
+from forms import LoginForm, EncryptionForm
+from userinput import offset
 
 webapp = Flask(__name__,
                template_folder="templates",
@@ -19,17 +18,12 @@ sess = Session(webapp)
 
 # TODO add login protection, so that the pages just can be accesed as an active user
 # TODO add Validation/Requirment to forms
-# TODO add randomNumberGeneartor if offset is empty/not a int number and cesar is selected
-# TODO make require unique names
 
 @webapp.before_first_request
 def setup():
-    # to add the relationship <-- Can properly be deleted
-    # User_TB.encrypted_string = relationship("EncodedString", order_by=EncodedString_TB.id, back_populates="userstr")
-    # EncryptionType_TB.encrypted_string = relationship("EncodedString", order_by=EncodedString_TB.id, back_populates="encryptiontyperelation")
     # creates the table
     Base.metadata.create_all(bind=db.engine)
-    session['testing_login'] = 1
+    # session['testing_login'] = 1
 
 
 # Routing
@@ -37,6 +31,7 @@ def setup():
 @webapp.route("/login", methods=['GET', 'POST'])
 @webapp.route("/", methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
     if request.method == 'POST':
         username = request.form['username']
         username = username.lower()
@@ -49,11 +44,26 @@ def login():
         db.session.add(new_user)
         db.session.commit()
         return redirect("/encryption")
-    # if GET:
-    form = LoginForm()
-    if form.validate_on_submit():
-        return redirect(url_for('success'))
-    return render_template('login.html', form=form)
+    elif request.method == 'GET':
+        return render_template('login.html', form=form)
+    # if request.method == 'POST':
+    #     # Wieso wird der erste Teil ausgeführt aber der zweite Nicht? Ich verstehe nicht, warum nichts gespeichert wird
+    #     if form.validate() == False:
+    #         return render_template('login.html', form=form)
+    #     else:
+    #         username = request.form['username']
+    #         username = username.lower()
+    #         # save to session
+    #         session['current_user'] = str(username)
+    #         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
+    #         if existing_user:
+    #             return redirect("/encryption")
+    #         new_user = User_TB(username)
+    #         db.session.add(new_user)
+    #         db.session.commit()
+    #         return redirect("/encryption")
+    # elif request.method == 'GET':
+    #     return render_template('login.html', form=form)
 
 
 # list which defines the scope of values
@@ -67,12 +77,12 @@ def display_encryption_page():
         encryptiontype = request.form['encryptiontype']
         new_encodedstring = ''
         if encryptiontype == 'cesar':
-            offset = int(request.form['offset'])
+            offsetfactor = offset.get_offset(request.form['offset'])
             # save to session
-            session['offset'] = str(offset)
+            session['offset'] = str(offsetfactor)
             for letter in string_to_encrypt:
-                new_encodedstring += Cesar.encrypter(offset, letter, list_of_characters)
-            new_cesar = Cesar_TB(offset)
+                new_encodedstring += Cesar.encrypter(offsetfactor, letter, list_of_characters)
+            new_cesar = Cesar_TB(offsetfactor)
             db.session.add(new_cesar)
             db.session.commit()
         else:
@@ -98,8 +108,8 @@ def display_encryption_page():
         return redirect("/result")
     # if GET:
     form = EncryptionForm()
-    if form.validate_on_submit():
-        return redirect(url_for('success'))
+    # if form.validate_on_submit():
+    #     return redirect(url_for('success'))
     return render_template('encryption.html', form=form, current_user=str(session['current_user']))
 
 
@@ -110,15 +120,15 @@ def display_result_page():
     encryptiontype = str(session['encryptiontype'])
     session.pop('encryptiontype', None)
     if encryptiontype == 'cesar':
-        offset = str(session['offset'])
+        offsetfactor = str(session['offset'])
     else:
-        offset = ''
+        offsetfactor = ''
     session.pop('offset', None)
     unencoded_string = str(session['unencoded_string'])
     session.pop('unencoded_string', None)
     encoded_string = str(session['encoded_string'])
     session.pop('encoded_string', None)
-    return render_template('result.html', encryptiontype=encryptiontype, offset=offset, unencoded_string = unencoded_string, encoded_string=encoded_string)
+    return render_template('result.html', encryptiontype=encryptiontype, offset=offsetfactor, unencoded_string = unencoded_string, encoded_string=encoded_string)
     # else:
     #     redirect('/')
     #     # it is possible to use categories : https://pythonise.com/series/learning-flask/flask-message-flashing

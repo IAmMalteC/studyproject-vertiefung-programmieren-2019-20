@@ -36,5 +36,8 @@ def encrypter(offset_factor, text, character_list):
     except IndexError:
         # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1
         encrypter( offset_factor - len(character_list), text, character_list)
+    except ValueError:
+        # if characters are used which are not in the character list, just print ?, not the best catch!
+        x = "¶"
 
     return x

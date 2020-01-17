@@ -9,25 +9,15 @@
 <div class="formwrapper">
     <h1 class="title">Encryption</h1>
     <form action="/encryption" method="POST">
-        <div class="form-field" id='encryptiontype'>{{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
-            {% if form.encryptiontype.errors %}
-            <ul class="errors">
-                {% for error in form.encryptiontype.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+        {{ form.csrf_token }}
+        <div class="form-field" id='encryptiontype'>
+            {{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
         </div>
         <div class="form-field" id='offset'>
-            <div>If you don't use this field or type something different then a number, the programm will use a random Number.</div>
+            <div>
+                If you don't use this field or type something different then a number, the programm will use a random Number.
+            </div>
             {{ form.offset.label }} {{ form.offset }}
-            {% if form.offset.errors %}
-            <ul class="errors">
-                {% for error in form.offset.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
         </div>
         <div class="form-field">
             <div class="hint">
@@ -36,15 +26,15 @@
                 If you are using other characters, they will be encrypted as &para;.
             </div>
             {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
-            {% if form.string_to_encrypt.errors %}
-            <ul class="errors">
-                {% for error in form.string_to_encrypt.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
         </div>
         {{ form.submit }}
+        {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+            <div class="alert alert-error">
+                Error in the field {{field}}: {{error}}
+            </div>
+            {% endfor %}
+        {% endfor %}
     </form>
 </div>
 {% endblock %}

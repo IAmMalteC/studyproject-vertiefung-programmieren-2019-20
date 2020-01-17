@@ -1,13 +1,13 @@
-import string
-from functools import wraps
-
+from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
+from encryption import Cesar, MonoAlphabetic
 from flask import Flask, render_template, session, redirect, request, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
-from encryption import Cesar, MonoAlphabetic
+from flask_wtf.csrf import CsrfProtect
 from forms import LoginForm, EncryptionForm
+from functools import wraps
 from userinput import offset
+import string
 
 webapp = Flask(__name__,
                template_folder="templates",
@@ -17,19 +17,30 @@ webapp.config.from_object('config.Config')
 
 db = SQLAlchemy(webapp)
 sess = Session(webapp)
-
-# TODO add Validation/Requirment to forms
+csrf = CsrfProtect(webapp) # CsrfProtection
+# TODO load Validation/Requirment to forms
 
 
 # Own decorators
-def user_is_logged_in(func):
+def check_user_is_logged_in(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'current_user' in session:
             return func(*args, **kwargs)
         else:
-            flash("Bitte erst einloggen.")
+            flash("Please login first.")
             return redirect('/login')
+    return wrapper
+
+
+def check_if_the_user_has_encrypted_text(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if 'encryptiontype' in session:
+            return func(*args, **kwargs)
+        else:
+            flash("Let us first encrypt some text.")
+            return redirect('/encryption')
     return wrapper
 
 
@@ -41,12 +52,12 @@ def setup():
 
 
 # Routing
-# TODO if user exists let him not enter this site redirect to encryption
 @webapp.route("/login", methods=['GET', 'POST'])
 @webapp.route("/", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if request.method == 'POST':
+    # if request.method == 'POST':
+    if form.validate_on_submit():
         username = request.form['username']
         username = username.lower()
         # save to session
@@ -58,8 +69,8 @@ def login():
         db.session.add(new_user)
         db.session.commit()
         return redirect("/encryption")
-    elif request.method == 'GET':
-        return render_template('login.html', form=form)
+
+    return render_template('login.html', form=form)
     # if request.method == 'POST':
     #     # Wieso wird der erste Teil ausgeführt aber der zweite Nicht? Ich verstehe nicht, warum nichts gespeichert wird
     #     if form.validate() == False:
@@ -85,9 +96,11 @@ list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.di
 
 
 @webapp.route("/encryption", methods=['GET', 'POST'])
-@user_is_logged_in
+@check_user_is_logged_in
 def display_encryption_page():
-    if request.method == 'POST':
+    form = EncryptionForm()
+    # if request.method == 'POST':
+    if form.validate_on_submit():
         string_to_encrypt = request.form['string_to_encrypt']
         encryptiontype = request.form['encryptiontype']
         new_encodedstring = ''
@@ -122,14 +135,14 @@ def display_encryption_page():
         session['encoded_string'] = str(new_encodedstring)
         return redirect("/result")
     # if GET:
-    form = EncryptionForm()
     # if form.validate_on_submit():
     #     return redirect(url_for('success'))
     return render_template('encryption.html', form=form, current_user=str(session['current_user']))
 
 
 @webapp.route("/result", methods=['GET', 'POST'])
-@user_is_logged_in
+@check_user_is_logged_in
+@check_if_the_user_has_encrypted_text
 def display_result_page():
     # .pop deletes the content
     encryptiontype = str(session['encryptiontype'])

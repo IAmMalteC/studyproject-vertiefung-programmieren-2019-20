@@ -35,5 +35,9 @@
     <footer>
         <p>&copy; Copyright 2020 by Problemsolver</p>
     </footer>
+    <!--to handle CSRF Protection on templates without forms-->
+    <form method="post" action="/">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
     <script type="text/javascript" src="{{url_for('static', filename='script.js') }}"></script>
 </body>

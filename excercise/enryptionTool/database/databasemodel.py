@@ -12,12 +12,12 @@ class User_TB(Base):
     user_password = Column(String(160))
     user_encrypted_string = relationship("EncodedString_TB", back_populates="encoded_string_userstr")
 
-    def __init__(self, name: str, password: str = ''):
+    def __init__(self, name: str, password: str = None):
         self.user_name = name
         self.user_password = password
 
     def __repr__(self):
-        return "User [ID: {0}, name: {1}]".format(self.user_id, self.user_name)
+        return "User [ID: {0}, name: {1}, password: {2}]".format(self.user_id, self.user_name, self.user_password)
 
 
 class EncodedString_TB(Base):

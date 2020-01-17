@@ -14,12 +14,14 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(),
                                                    Length(max=80, message="Your username may not be longer then 80 characters"),
                                                    Regexp('^[a-zA-Z]+$', message="Your username must just contain letters.")])
-    password = PasswordField("Password", validators=[InputRequired(),
-                                                     Length(max=160, message="Your password may not be longer then 160 characters")])
+    # Not a Inputrequired field, because console user, could be registred without a password
+    password = PasswordField("Password")
     submit = SubmitField('Login')
 
-class LogoutForm(LoginForm):
-    """Logout Form"""
+class RegisterForm(LoginForm):
+    """Register Form"""
+    password = PasswordField("Password", validators=[InputRequired(),
+                                                     Length(max=160, message="Your password may not be longer then 160 characters")])
     submit = SubmitField('Register')
 
 
@@ -31,6 +33,6 @@ class EncryptionForm(FlaskForm):
                                 default='cesar')
     offset = StringField('Offsetfactor')  # IntegerField
     string_to_encrypt = TextAreaField('Text to encode', validators=[InputRequired(),
-                                                                    Regexp('[!-~]+$', # = !"#$%&'()*+,-./0-9:;<=>?@A-Z[\]^_`a-z{|}~
+                                                                    Regexp('^[ -~]+$', # [ -~]= !"#$%&'()*+,-./0-9:;<=>?@A-Z[\]^_`a-z{|}~
                                                                            message="Just use following characters: a-z, A-Z, 0-9 oder !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~")])
     submit = SubmitField('Encode and save')

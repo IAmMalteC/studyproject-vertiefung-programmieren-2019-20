@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, request, session, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-from forms import LoginForm, EncryptionForm, LogoutForm
+from forms import LoginForm, EncryptionForm, RegisterForm
 from functools import wraps
 from userinput import offset
 
@@ -54,6 +54,9 @@ def setup():
 @webapp.route("/", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if 'current_user' in session:
+        flash("You are already logged in.\nIf you want to login an other user, you first have to logout.", "error")
+        return render_template('login.html', form=form)
     if form.validate_on_submit():
         username = request.form['username']
         username = username.lower()
@@ -61,19 +64,20 @@ def login():
         # save to session
         session['current_user'] = str(username)
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
-        if existing_user.user_password == password:
+        # Last part added so that user, who already registered in the console app, can use the website.
+        if existing_user.user_password == password or existing_user.user_password == None and password == '':
             return redirect("/encryption")
         elif existing_user:
             flash("Wrong password","error")
             return redirect('/login')
         flash("Please register first","error")
-        return redirect('/register')
+        return redirect('/login')
     return render_template('login.html', form=form)
 
 
 @webapp.route("/register", methods=['GET', 'POST'])
 def register():
-    form = LogoutForm()
+    form = RegisterForm()
     if form.validate_on_submit():
         username = request.form['username']
         username = username.lower()

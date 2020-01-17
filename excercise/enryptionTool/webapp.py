@@ -19,10 +19,6 @@ db = SQLAlchemy(webapp)
 sess = Session(webapp)
 csrf = CSRFProtect(webapp) # CSRFProtection
 
-# Todo make a page to show the registred users route: /users
-# Todo create a header with /users /encryption and /logout
-# Todo add login protection to /users /encryption and /result
-# Todo let all use / , /login, /register and /logout
 # Todo add password to App.py
 
 
@@ -51,7 +47,7 @@ def check_if_the_user_has_encrypted_text(func):
 
 @webapp.before_first_request
 def setup():
-    # creates the table
+    # creates the database if it isn't existing
     Base.metadata.create_all(bind=db.engine)
 
 
@@ -89,13 +85,14 @@ def register():
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
         if existing_user:
             flash("Your are already registerd, please login", "error")
-            return redirect("/login")
+            return redirect("/register")
         new_user = User_TB(username, password)
         db.session.add(new_user)
         db.session.commit()
         flash("Succesfully registered.", "session")
-        return redirect("/encryption")
+        return redirect("/register")
     return render_template('register.html', form=form)
+
 
 @webapp.route("/encryption", methods=['GET', 'POST'])
 @check_user_is_logged_in
@@ -136,9 +133,6 @@ def display_encryption_page():
         session['unencoded_string'] = str(string_to_encrypt)
         session['encoded_string'] = str(new_encodedstring)
         return redirect("/result")
-    # if GET:
-    # if form.validate_on_submit():
-    #     return redirect(url_for('success'))
     return render_template('encryption.html', form=form, current_user=str(session['current_user']))
 
 
@@ -159,6 +153,13 @@ def display_result_page():
     encoded_string = str(session['encoded_string'])
     session.pop('encoded_string', None)
     return render_template('result.html', encryptiontype=encryptiontype, offset=offsetfactor, unencoded_string = unencoded_string, encoded_string=encoded_string)
+
+
+@webapp.route("/users", methods=['GET'])
+@check_user_is_logged_in
+def show_users():
+    all_users = db.session.query(User_TB).order_by(User_TB.user_name).all()
+    return render_template('users.html', useroutput=all_users)
 
 
 @webapp.route("/logout", methods=['GET'])

@@ -8,8 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- To add head data on the html pages -->
     {% block head %}
-    <!-- Maybe that should be on line 4-->
     {% endblock %}
+</head>
+
+</html>
+<body onload="checkIfCesarWasUsedForEncryption()">
+    <header>
+        <a href="/encryption">Encryption</a>
+        <a href="/users">Users</a>
+        <a href="/register">Register</a>
+        <!-- change between login and logout -->
+<!--        <a href="/login">Login</a>-->
+        <a href="/logout">Logout</a>
+    </header>
     <!-- to give some user feedback -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -20,14 +31,6 @@
     </ul>
     {% endif %}
     {% endwith %}
-</head>
-
-</html>
-
-<body onload="checkIfCesarWasUsedForEncryption()">
-    <header>
-
-    </header>
     <div id="content">
         {% block content %}
         {% endblock %}

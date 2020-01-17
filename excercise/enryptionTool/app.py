@@ -1,6 +1,6 @@
 # This is the console app
 import string
-from database import DatabaseCreation, InsertIntoDatabase
+from database import databasemodel, InsertIntoDatabase
 from database.InsertIntoDatabase import InsertIntoDatabase
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
@@ -12,10 +12,11 @@ list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.di
 def __startup__():
     print('LOGIN')
     username = input('Please enter your Username: ').lower()
+    #password = input("Please enter your password: ")
     insertIntoDatabase = InsertIntoDatabase()
-    user = insertIntoDatabase.insert_user_check_exists(username)
+    user = insertIntoDatabase.insert_user_check_exists(username)#, password)
     # Welcome message
-    print("Welcome " + DatabaseCreation.User_TB.__repr__(user))
+    print("Welcome " + databasemodel.User_TB.__repr__(user))
     return username
 
 

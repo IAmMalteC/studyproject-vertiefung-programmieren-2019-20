@@ -16,6 +16,10 @@ class User_TB(Base):
         self.user_name = name
         self.user_password = password
 
+    def __init__(self, name: str):
+        self.user_name = name
+        self.user_password = "default"
+
     # def __getitem__(self, user_name):
     #     user_name = self.user_name
 

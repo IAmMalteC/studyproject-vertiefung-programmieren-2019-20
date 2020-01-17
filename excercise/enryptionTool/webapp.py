@@ -19,8 +19,6 @@ db = SQLAlchemy(webapp)
 sess = Session(webapp)
 csrf = CSRFProtect(webapp) # CSRFProtection
 
-# Todo add password to App.py
-
 
 # Own decorators
 def check_user_is_logged_in(func):

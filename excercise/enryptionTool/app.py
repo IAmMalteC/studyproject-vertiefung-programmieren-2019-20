@@ -5,6 +5,9 @@ from database.InsertIntoDatabase import InsertIntoDatabase
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
+# list which defines the scope of values
+list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
+
 
 def __startup__():
     print('LOGIN')
@@ -17,9 +20,6 @@ def __startup__():
 
 
 def __menu__(username):
-    # list which defines the scope of values
-    list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-
     while True:
         print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
 

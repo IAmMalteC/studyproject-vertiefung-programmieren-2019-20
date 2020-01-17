@@ -9,13 +9,15 @@ class User_TB(Base):
     __tablename__ = 'user'
     user_id = Column(Integer, primary_key=True)
     user_name = Column(String(80), unique=True, nullable=False)
+    user_password = Column(String(160), nullable=False)
     user_encrypted_string = relationship("EncodedString_TB", back_populates="encoded_string_userstr")
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, password: str):
         self.user_name = name
+        self.user_password = password
 
-    def __getitem__(self, user_name):
-        user_name = self.user_name
+    # def __getitem__(self, user_name):
+    #     user_name = self.user_name
 
     def __repr__(self):
         return "User [ID: {0}, name: {1}]".format(self.user_id, self.user_name)

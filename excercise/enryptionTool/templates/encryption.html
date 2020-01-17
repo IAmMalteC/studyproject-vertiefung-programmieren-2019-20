@@ -20,11 +20,6 @@
             {{ form.offset.label }} {{ form.offset }}
         </div>
         <div class="form-field">
-            <div class="hint">
-                Just use following characters: a-z, A-Z, 0-9 oder &excl;&quot;&num;&dollar;&percnt;&amp;&apos;&lpar;&rpar;&ast;&plus;&comma;&#x2d;&period;&sol;&colon;&semi;&lt;&equals;&gt;&quest;&commat;&lsqb;&bsol;&rsqb;&Hat;&lowbar;&grave;&lcub;&verbar;&rcub;&#x7e;
-                </br>
-                If you are using other characters, they will be encrypted as &para;.
-            </div>
             {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
         </div>
         {{ form.submit }}

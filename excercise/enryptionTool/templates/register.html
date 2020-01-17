@@ -1,9 +1,9 @@
 {% extends "basetemplate.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 {% block content %}
 <div class="formwrapper">
-    <h1 class="title">Login</h1>
-    <form action="/" method="POST">
+    <h1 class="title">Register</h1>
+    <form action="/register" method="POST">
         {{ form.csrf_token }}
         <div class="form-field">
             {{ form.username.label }} {{ form.username }}

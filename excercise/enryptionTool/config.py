@@ -19,4 +19,5 @@ class Config:
     SESSION_FILE_DIR = './flask_session'
     SESSION_PERMANENT = False
     SESSION_FILE_THRESHOLD = 100
+    PERMANENT_SESSION_LIFETIME = 1200 # 1200 seconds = 20 Minutes
 

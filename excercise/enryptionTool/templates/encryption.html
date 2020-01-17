@@ -18,7 +18,9 @@
             </ul>
             {% endif %}
         </div>
-        <div class="form-field" id='offset'>{{ form.offset.label }} {{ form.offset }}
+        <div class="form-field" id='offset'>
+            <div>If you don't use this field or type something different then a number, the programm will use a random Number.</div>
+            {{ form.offset.label }} {{ form.offset }}
             {% if form.offset.errors %}
             <ul class="errors">
                 {% for error in form.offset.errors %}

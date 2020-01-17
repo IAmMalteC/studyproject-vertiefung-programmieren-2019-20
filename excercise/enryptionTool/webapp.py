@@ -1,5 +1,5 @@
 import string
-from flask import Flask, render_template, session, redirect, request
+from flask import Flask, render_template, session, redirect, request, flash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
@@ -16,7 +16,6 @@ webapp.config.from_object('config.Config')
 db = SQLAlchemy(webapp)
 sess = Session(webapp)
 
-# TODO add login protection, so that the pages just can be accesed as an active user
 # TODO add Validation/Requirment to forms
 
 @webapp.before_first_request
@@ -107,32 +106,37 @@ def display_encryption_page():
         session['encoded_string'] = str(new_encodedstring)
         return redirect("/result")
     # if GET:
-    form = EncryptionForm()
-    # if form.validate_on_submit():
-    #     return redirect(url_for('success'))
-    return render_template('encryption.html', form=form, current_user=str(session['current_user']))
+    if 'current_user' in session:
+        form = EncryptionForm()
+        # if form.validate_on_submit():
+        #     return redirect(url_for('success'))
+        return render_template('encryption.html', form=form, current_user=str(session['current_user']))
+    # else part if 'username' not in session
+    flash("Bitte erst einloggen.")
+    return redirect('/login')
 
 
 @webapp.route("/result", methods=['GET', 'POST'])
 def display_result_page():
     # if not session.get(['current_user']) is None:
-    # .pop deletes the content
-    encryptiontype = str(session['encryptiontype'])
-    session.pop('encryptiontype', None)
-    if encryptiontype == 'cesar':
-        offsetfactor = str(session['offset'])
-    else:
-        offsetfactor = ''
-    session.pop('offset', None)
-    unencoded_string = str(session['unencoded_string'])
-    session.pop('unencoded_string', None)
-    encoded_string = str(session['encoded_string'])
-    session.pop('encoded_string', None)
-    return render_template('result.html', encryptiontype=encryptiontype, offset=offsetfactor, unencoded_string = unencoded_string, encoded_string=encoded_string)
-    # else:
-    #     redirect('/')
-    #     # it is possible to use categories : https://pythonise.com/series/learning-flask/flask-message-flashing
-    #     flash("Bitte erst einloggen.")
+    if 'current_user' in session:
+        # .pop deletes the content
+        encryptiontype = str(session['encryptiontype'])
+        session.pop('encryptiontype', None)
+        if encryptiontype == 'cesar':
+            offsetfactor = str(session['offset'])
+        else:
+            offsetfactor = ''
+        session.pop('offset', None)
+        unencoded_string = str(session['unencoded_string'])
+        session.pop('unencoded_string', None)
+        encoded_string = str(session['encoded_string'])
+        session.pop('encoded_string', None)
+        return render_template('result.html', encryptiontype=encryptiontype, offset=offsetfactor, unencoded_string = unencoded_string, encoded_string=encoded_string)
+    # else part if 'username' not in session
+    # it is possible to use categories : https://pythonise.com/series/learning-flask/flask-message-flashing
+    flash("Bitte erst einloggen.")
+    return redirect('/login')
 
 
 

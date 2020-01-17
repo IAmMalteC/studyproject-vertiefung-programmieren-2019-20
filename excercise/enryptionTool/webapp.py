@@ -82,8 +82,9 @@ def register():
         username = request.form['username']
         username = username.lower()
         password = request.form['password']
-        # save to session
-        session['current_user'] = str(username)
+        # save to session, if a person isn't logged in already.
+        if not 'current_user' in session:
+            session['current_user'] = str(username)
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
         if existing_user:
             flash("Your are already registerd, please login", "error")
@@ -91,7 +92,10 @@ def register():
         new_user = User_TB(username, password)
         db.session.add(new_user)
         db.session.commit()
-        flash("Succesfully registered.", "session")
+        if 'current_user' in session == username:
+            flash("Succesfully registered.", "session")
+        else:
+            flash("Succesfully registered a new user.\nHe or she can now login.", "session")
         return redirect("/register")
     return render_template('register.html', form=form)
 

@@ -333,6 +333,3 @@ local.properties
 
 # Virtual Environment
 venv/
-
-#Own folders - flask session,
-excercise/enryptionTool/flask_session

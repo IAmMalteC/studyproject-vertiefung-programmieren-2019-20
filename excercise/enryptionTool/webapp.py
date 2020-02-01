@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from forms import LoginForm, EncryptionForm, RegisterForm
 from functools import wraps
+import requests
 from userinput import offset
 
 webapp = Flask(__name__,
@@ -55,7 +56,7 @@ def setup():
 def login():
     form = LoginForm()
     if 'current_user' in session:
-        flash("You are already logged in.\nIf you want to login an other user, you first have to logout.", "error")
+        flash("You are already logged in.\nIf you want to login as an other user, you first have to logout.", "error")
         return render_template('login.html', form=form)
     if form.validate_on_submit():
         username = request.form['username']
@@ -87,7 +88,7 @@ def register():
             session['current_user'] = str(username)
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
         if existing_user:
-            flash("Your are already registerd, please login", "error")
+            flash("Your are already registered, please login", "error")
             return redirect("/register")
         new_user = User_TB(username, password)
         db.session.add(new_user)
@@ -174,6 +175,25 @@ def logout():
     session.clear()
     flash("Successfully logged out.", "session")
     return redirect('/')
+
+
+@webapp.route("/catfact", methods=['GET'])
+@check_user_is_logged_in
+def catfact():
+    # api documentation: https://alexwohlbruck.github.io/cat-facts/docs/
+    response = requests.get("https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=1")
+    response_body = response.json()  # parse response into json dictionary
+    return render_template('catfact.html', catfact=response_body)
+
+
+@webapp.route("/joke", methods=['GET'])
+@check_user_is_logged_in
+def joke():
+    # api documentation: http://www.icndb.com/api/
+    response = requests.get("http://api.icndb.com/jokes/random?escape=html") # The results are escaped to html --> " = &quot;
+    response_body = response.json()  # parse response into json dictionary
+    return render_template('joke.html', joke=response_body)
+
 
 # Just for debugging!
 if __name__ == "__main__":

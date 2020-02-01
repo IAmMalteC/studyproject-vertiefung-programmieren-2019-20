@@ -14,12 +14,11 @@
 </html>
 <body onload="checkIfCesarWasUsedForEncryption()">
     <header>
-        <a href="/encryption">Encryption</a>
-        <a href="/users">Users</a>
-        <a href="/register">Register</a>
-        <!-- change between login and logout -->
-        <a href="/login">Login</a>
-        <a href="/logout">Logout</a>
+        {% if not 'current_user' in session %}
+            {% include "topnavnotactive.html" %}
+        {% else %}
+            {% include "topnavactive.html" %}
+        {% endif %}
     </header>
     <!-- to give some user feedback -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -35,9 +34,8 @@
         {% block content %}
         {% endblock %}
     </div>
-    <footer>
-        <p>&copy; Copyright 2020 by Problemsolver</p>
-    </footer>
+
+    {% include "footer.html" %}
     <!--to handle CSRF Protection on templates without forms-->
     <form method="post" action="/">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />

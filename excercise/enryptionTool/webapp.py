@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from forms import LoginForm, EncryptionForm, RegisterForm
 from functools import wraps
+import requests
 from userinput import offset
 
 webapp = Flask(__name__,
@@ -174,6 +175,16 @@ def logout():
     session.clear()
     flash("Successfully logged out.", "session")
     return redirect('/')
+
+
+@webapp.route("/catfacts", methods=['GET'])
+@check_user_is_logged_in
+def catfact():
+    # api documentation: https://alexwohlbruck.github.io/cat-facts/docs/
+    response = requests.get("https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=1")
+    response_body = response.json()  # parse response into json dictionary
+    return render_template('catfact.html', catfact=response_body)
+
 
 # Just for debugging!
 if __name__ == "__main__":

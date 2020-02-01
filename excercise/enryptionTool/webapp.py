@@ -55,7 +55,7 @@ def setup():
 def login():
     form = LoginForm()
     if 'current_user' in session:
-        flash("You are already logged in.\nIf you want to login an other user, you first have to logout.", "error")
+        flash("You are already logged in.\nIf you want to login as an other user, you first have to logout.", "error")
         return render_template('login.html', form=form)
     if form.validate_on_submit():
         username = request.form['username']
@@ -87,7 +87,7 @@ def register():
             session['current_user'] = str(username)
         existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
         if existing_user:
-            flash("Your are already registerd, please login", "error")
+            flash("Your are already registered, please login", "error")
             return redirect("/register")
         new_user = User_TB(username, password)
         db.session.add(new_user)

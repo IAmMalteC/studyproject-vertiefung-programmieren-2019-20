@@ -177,13 +177,22 @@ def logout():
     return redirect('/')
 
 
-@webapp.route("/catfacts", methods=['GET'])
+@webapp.route("/catfact", methods=['GET'])
 @check_user_is_logged_in
 def catfact():
     # api documentation: https://alexwohlbruck.github.io/cat-facts/docs/
     response = requests.get("https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=1")
     response_body = response.json()  # parse response into json dictionary
     return render_template('catfact.html', catfact=response_body)
+
+
+@webapp.route("/joke", methods=['GET'])
+@check_user_is_logged_in
+def joke():
+    # api documentation: http://www.icndb.com/api/
+    response = requests.get("http://api.icndb.com/jokes/random?escape=html") # The results are escaped to html --> " = &quot;
+    response_body = response.json()  # parse response into json dictionary
+    return render_template('joke.html', joke=response_body)
 
 
 # Just for debugging!

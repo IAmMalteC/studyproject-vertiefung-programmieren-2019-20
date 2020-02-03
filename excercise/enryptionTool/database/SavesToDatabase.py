@@ -1,14 +1,30 @@
-from database import DatabaseCreation
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from .databasemodel import Base  # import the databasemodel
 from database.databasemodel import MonoAlphabeticSubstitutionTB, CesarTB, EncodedStringTB, EncryptionTypeTB, UserTB
 
 
-class SavesToDatabase(object):
-    def __init__(self):
-        engine = DatabaseCreation.create_database()
-        global session
-        session = DatabaseCreation.open_session(engine)
+# Creating connection
+def create_database_connection():
+    engine = create_database()
+    global session
+    session = open_session(engine)
 
 
+def create_database():
+    database = 'sqlite:///database/datalog.db'
+    engine = create_engine(database)
+    Base.metadata.create_all(engine)
+    return engine
+
+
+def open_session(engine):
+    temporary_session = sessionmaker(engine)
+    created_session = temporary_session()
+    return created_session
+
+
+# Saves input to the Database
 def save_user_check_exists(name):
     current_user = UserTB(name)  # The password value is not used in the console app
 

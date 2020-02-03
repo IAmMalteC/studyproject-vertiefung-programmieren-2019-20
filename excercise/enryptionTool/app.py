@@ -1,7 +1,9 @@
-# This is the console app
+"""
+This is the console app
+"""
 import string
 from database import databasemodel, SavesToDatabase
-from database.SavesToDatabase import SavesToDatabase
+from database.SavesToDatabase import save_user_check_exists, create_database_connection
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
@@ -11,26 +13,25 @@ list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.di
 
 def __startup__():
     print('LOGIN')
-    username = input('Please enter your Username: ').lower()
-    #password = input("Please enter your password: ")
-    insertIntoDatabase = SavesToDatabase()
-    user = insertIntoDatabase.insert_user_check_exists(username)#, password)
-    # Welcome message
-    print("Welcome " + databasemodel.UserTB.__repr__(user))
-    return username
+    current_username = input('Please enter your username: ').lower()
+    create_database_connection()
+    # insert_into_database = SavesToDatabase()
+    user = save_user_check_exists(current_username)
+    print("Welcome " + databasemodel.UserTB.__repr__(user))  # Welcome message
+    return current_username
 
 
-def __menu__(username):
+def __menu__(current_username):
     while True:
         print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
 
-        text = input('Please choose a value and press Enter: ')
+        text = input('Please choose a value and press \"Enter\": ')
         # Cesar Encryption
         if text == '1':
-            Cesar(username, list_of_characters)
+            Cesar(current_username, list_of_characters)
         # Mono alphabetic substitution
         elif text == '2':
-            MonoAlphabetic(username, list_of_characters)
+            MonoAlphabetic(current_username, list_of_characters)
         # About page
         elif text == '3':
             print('This is a basic encryption tool')

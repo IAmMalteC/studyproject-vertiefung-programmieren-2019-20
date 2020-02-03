@@ -1,7 +1,7 @@
 # This is the console app
 import string
-from database import databasemodel, InsertIntoDatabase
-from database.InsertIntoDatabase import InsertIntoDatabase
+from database import databasemodel, SavesToDatabase
+from database.SavesToDatabase import SavesToDatabase
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
@@ -13,10 +13,10 @@ def __startup__():
     print('LOGIN')
     username = input('Please enter your Username: ').lower()
     #password = input("Please enter your password: ")
-    insertIntoDatabase = InsertIntoDatabase()
+    insertIntoDatabase = SavesToDatabase()
     user = insertIntoDatabase.insert_user_check_exists(username)#, password)
     # Welcome message
-    print("Welcome " + databasemodel.User_TB.__repr__(user))
+    print("Welcome " + databasemodel.UserTB.__repr__(user))
     return username
 
 

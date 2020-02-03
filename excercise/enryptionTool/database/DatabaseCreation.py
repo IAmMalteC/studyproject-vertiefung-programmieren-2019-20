@@ -1,7 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-# import the databasemodel
-from .databasemodel import Base
+from .databasemodel import Base  # import the databasemodel
 
 
 def create_database():
@@ -12,8 +11,8 @@ def create_database():
 
 
 def open_session(engine):
-    Session = sessionmaker(engine)
-    session = Session()
+    temporary_session = sessionmaker(engine)
+    session = temporary_session()
     return session
 
 

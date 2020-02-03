@@ -1,5 +1,5 @@
 from app import list_of_characters
-from database.databasemodel import Base, User_TB, Cesar_TB, MonoAlphabeticSubstitution_TB, EncodedString_TB, EncryptionType_TB
+from database.databasemodel import Base, UserTB, CesarTB, MonoAlphabeticSubstitutionTB, EncodedStringTB, EncryptionTypeTB
 from encryption import Cesar, MonoAlphabetic
 from flask import Flask, render_template, redirect, request, session, flash
 from flask_session import Session
@@ -64,7 +64,7 @@ def login():
         password = request.form['password']
         # save to session
         session['current_user'] = str(username)
-        existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
+        existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
         # Last part added so that user, who already registered in the console app, can use the website.
         if existing_user.user_password == password or existing_user.user_password == None and password == '':
             return redirect("/encryption")
@@ -86,11 +86,11 @@ def register():
         # save to session, if a person isn't logged in already.
         if not 'current_user' in session:
             session['current_user'] = str(username)
-        existing_user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
+        existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
         if existing_user:
             flash("Your are already registered, please login", "error")
             return redirect("/register")
-        new_user = User_TB(username, password)
+        new_user = UserTB(username, password)
         db.session.add(new_user)
         db.session.commit()
         if 'current_user' in session == username:
@@ -115,24 +115,24 @@ def display_encryption_page():
             # save to session
             session['offset'] = str(offsetfactor)
             for letter in string_to_encrypt:
-                new_encodedstring += Cesar.encrypter(offsetfactor, letter, list_of_characters)
-            new_cesar = Cesar_TB(offsetfactor)
+                new_encodedstring += Cesar.cesar_encrypter(offsetfactor, letter, list_of_characters)
+            new_cesar = CesarTB(offsetfactor)
             db.session.add(new_cesar)
             db.session.commit()
         else:
-            new_mono = MonoAlphabeticSubstitution_TB()
+            new_mono = MonoAlphabeticSubstitutionTB()
             db.session.add(new_mono)
             db.session.commit()
             list_of_characters_reverse = MonoAlphabetic.reverse_text(list_of_characters)
             for letter in string_to_encrypt:
-                new_encodedstring += MonoAlphabetic.encrypter(letter, list_of_characters, list_of_characters_reverse)
+                new_encodedstring += MonoAlphabetic.mono_encrypter(letter, list_of_characters, list_of_characters_reverse)
 
         # to get the encryptiontype from the DB -- It searches for the last item
-        type = db.session.query(EncryptionType_TB).filter(EncryptionType_TB.encryption_type_type == encryptiontype).order_by(EncryptionType_TB.encryption_type_id.desc()).first()
+        type = db.session.query(EncryptionTypeTB).filter(EncryptionTypeTB.encryption_type_type == encryptiontype).order_by(EncryptionTypeTB.encryption_type_id.desc()).first()
         # to get the user from the DB
         username = str(session['current_user'])
-        user = db.session.query(User_TB).filter(User_TB.user_name == username).first()
-        new_string = EncodedString_TB(new_encodedstring, user.user_id, type.encryption_type_id)
+        user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
+        new_string = EncodedStringTB(new_encodedstring, user.user_id, type.encryption_type_id)
         db.session.add(new_string)
         db.session.commit()
         # save to session
@@ -165,7 +165,7 @@ def display_result_page():
 @webapp.route("/users", methods=['GET'])
 @check_user_is_logged_in
 def show_users():
-    all_users = db.session.query(User_TB).order_by(User_TB.user_name).all()
+    all_users = db.session.query(UserTB).order_by(UserTB.user_name).all()
     return render_template('users.html', useroutput=all_users)
 
 

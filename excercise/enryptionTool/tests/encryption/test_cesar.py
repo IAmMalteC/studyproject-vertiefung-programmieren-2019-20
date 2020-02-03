@@ -1,7 +1,7 @@
 import unittest
 import string
 from unittest import TestCase
-from encryption.Cesar import encrypter
+from encryption.Cesar import cesar_encrypter
 
 
 class TestCesar(TestCase):
@@ -14,7 +14,7 @@ class TestCesar(TestCase):
         call with reduced value range
         """
         text_data = "~"
-        result = encrypter(1, text_data, self.list_of_characters)
+        result = cesar_encrypter(1, text_data, self.list_of_characters)
         self.assertRegex(result, "a")
 
     def test_encrypter_output_offset_bigger_then_list(self):
@@ -24,7 +24,7 @@ class TestCesar(TestCase):
         """
         text_data = "a"
         offset_factor = len(self.list_of_characters) + 1
-        result = encrypter(offset_factor, text_data, self.list_of_characters)
+        result = cesar_encrypter(offset_factor, text_data, self.list_of_characters)
         self.assertRegex(result, "b")
 
     def test_list_contains_characters(self):

@@ -1,4 +1,4 @@
-from database.InsertIntoDatabase import insert_cesar, insert_encryptedstring
+from database.SavesToDatabase import save_cesar, save_encryptedstring
 from userinput import offset
 
 
@@ -7,32 +7,32 @@ class Cesar(object):
         print('You are using the Cesar encryption')
         offset_factor = offset.get_offset(input("Please choose an offset factor: "))
         print('Your offset factor is:', offset_factor)
-        insert_cesar(offset_factor)  # saves encryption to database
+        save_cesar(offset_factor)  # saves encryption to database
 
         # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         output = ''
         text_from_user = input('Type the text you want to encrypt:')
-        for letter in text_from_user:
-            output = output + encrypter(offset_factor, letter, list_of_characters)
+        for character in text_from_user:
+            output = output + cesar_encrypter(offset_factor, character, list_of_characters)
 
-        insert_encryptedstring(output, username, "cesar")  # save string to database
+        save_encryptedstring(output, username, "cesar")  # save string to database
         print(output)
 
 
-def encrypter(offset_factor, text, character_list):
-    global x
+def cesar_encrypter(offset_factor, unencoded_character, character_list):
+    global encoded_character
     try:
-        if text == ' ':
-            x = text
+        if unencoded_character == ' ':
+            encoded_character = unencoded_character
         else:
             while len(character_list) < offset_factor:  # Checks if the chosen offset factor is too long for the array
                 offset_factor = offset_factor - len(character_list)
-            x = character_list[character_list.index(text) + offset_factor]  # sets x to the character by adding the offsetfactor to the index of the given character
+            encoded_character = character_list[character_list.index(unencoded_character) + offset_factor]  # sets x to the character by adding the offsetfactor to the index of the given character
     except IndexError:
         # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1
-        encrypter(offset_factor - len(character_list), text, character_list)
+        cesar_encrypter(offset_factor - len(character_list), unencoded_character, character_list)
     except ValueError:
         print("Your choose a character which is not in our list.\nIt is used \"¶\" instead.")
-        x = "¶"
+        encoded_character = "¶"
 
-    return x
+    return encoded_character

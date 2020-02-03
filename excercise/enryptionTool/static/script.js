@@ -15,12 +15,12 @@ function changeOffsetVisibility() {
  * If status contains a number it sows the offset Factor box
  */
 function checkIfCesarWasUsedForEncryption() {
-    var x = document.getElementsByTagName("META");
+    var meta_elements = document.getElementsByTagName("META");
     var status = "";
-    var i;
-    for (i = 0; i < x.length; i++) {
-      if (x[i].name == "offsetStatus") {
-        status = x[i].content;
+//    var i;
+    for (var i = 0; i < meta_elements.length; i++) {
+      if (meta_elements[i].name == "offsetStatus") {
+        status = meta_elements[i].content;
       }
     }
     if (status == "") {

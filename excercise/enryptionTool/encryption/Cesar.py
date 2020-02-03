@@ -7,19 +7,15 @@ class Cesar(object):
         print('You are using the Cesar encryption')
         offset_factor = offset.get_offset(input("Please choose an offset factor: "))
         print('Your offset factor is:', offset_factor)
-        # saves encryption
-        cesar = insert_cesar(offset_factor)
+        insert_cesar(offset_factor)  # saves encryption to database
 
-        output = ''
         # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-
+        output = ''
         text_from_user = input('Type the text you want to encrypt:')
         for letter in text_from_user:
             output = output + encrypter(offset_factor, letter, list_of_characters)
 
-        # save string
-        insert_encryptedstring(output, username, "cesar")
-
+        insert_encryptedstring(output, username, "cesar")  # save string to database
         print(output)
 
 
@@ -28,19 +24,15 @@ def encrypter(offset_factor, text, character_list):
     try:
         if text == ' ':
             x = text
-        elif len(character_list) < offset_factor:
-            new_offset_factor = offset_factor - len(character_list)
-            encrypter( new_offset_factor, text, character_list)
         else:
-            x = character_list[character_list.index(text) + offset_factor]
+            while len(character_list) < offset_factor:  # Checks if the chosen offset factor is too long for the array
+                offset_factor = offset_factor - len(character_list)
+            x = character_list[character_list.index(text) + offset_factor]  # sets x to the character by adding the offsetfactor to the index of the given character
     except IndexError:
         # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1
-        encrypter( offset_factor - len(character_list), text, character_list)
+        encrypter(offset_factor - len(character_list), text, character_list)
     except ValueError:
         print("Your choose a character which is not in our list.\nIt is used \"¶\" instead.")
         x = "¶"
-    except RecursionError:
-        print("Your offsetfactor was to big.\nPlease try again.")
-        x = text
 
     return x

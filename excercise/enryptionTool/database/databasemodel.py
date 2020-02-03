@@ -17,7 +17,7 @@ class User_TB(Base):
         self.user_password = password
 
     def __repr__(self):
-        return "User [ID: {0}, name: {1}, password: {2}]".format(self.user_id, self.user_name, self.user_password)
+        return "User [ID: {0}, name: {1}]".format(self.user_id, self.user_name)
 
 
 class EncodedString_TB(Base):

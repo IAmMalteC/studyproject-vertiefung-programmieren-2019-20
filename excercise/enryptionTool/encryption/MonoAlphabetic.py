@@ -1,4 +1,4 @@
-from database.SavesToDatabase import save_monoalphabetic, save_encryptedstring
+from database.saves_to_database import save_monoalphabetic, save_encryptedstring
 
 
 class MonoAlphabetic(object):

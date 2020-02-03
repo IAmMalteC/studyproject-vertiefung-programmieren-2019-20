@@ -2,8 +2,8 @@
 This is the console app
 """
 import string
-from database import databasemodel, SavesToDatabase
-from database.SavesToDatabase import save_user_check_exists, create_database_connection
+from database import databasemodel
+from database.saves_to_database import save_user_check_exists, create_database_connection
 from encryption.Cesar import Cesar
 from encryption.MonoAlphabetic import MonoAlphabetic
 
@@ -15,7 +15,6 @@ def __startup__():
     print('LOGIN')
     current_username = input('Please enter your username: ').lower()
     create_database_connection()
-    # insert_into_database = SavesToDatabase()
     user = save_user_check_exists(current_username)
     print("Welcome " + databasemodel.UserTB.__repr__(user))  # Welcome message
     return current_username

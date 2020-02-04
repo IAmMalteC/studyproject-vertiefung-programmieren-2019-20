@@ -5,8 +5,8 @@ from encryption.MonoAlphabetic import mono_encrypter, reverse_text
 
 
 class TestMonoAlphabetic(TestCase):
+    """ Class for testing monoalphabetic encryption """
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-    # monoAlphabetic = MonoAlphabetic()
     list_of_characters_reverse = reverse_text(list_of_characters)
 
     def test_encrypter(self):

@@ -16,13 +16,21 @@ webapp = Flask(__name__,
 # Storing our configuration settings in config.py
 webapp.config.from_object('config.Config')
 
+# Create database session
 db = SQLAlchemy(webapp)
+# Creates session cookie
 sess = Session(webapp)
-csrf = CSRFProtect(webapp) # CSRFProtection
+# CSRFProtection
+csrf = CSRFProtect(webapp)
 
 
 # Own decorators
 def check_user_is_logged_in(func):
+    """ Checks if a user is logged in,
+    if not the user is redirected to the login page.
+    :param func:
+    :return:
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'current_user' in session:
@@ -34,6 +42,10 @@ def check_user_is_logged_in(func):
 
 
 def check_if_the_user_has_encrypted_text(func):
+    """ Checks if the user is trying to enter the result page from somewhere else then the encryption page.
+    :param func:
+    :return:
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'encryptiontype' in session:
@@ -46,7 +58,7 @@ def check_if_the_user_has_encrypted_text(func):
 
 @webapp.before_first_request
 def setup():
-    # creates the database if it isn't existing
+    # Create the database, if it isn't existing
     Base.metadata.create_all(bind=db.engine)
 
 
@@ -64,7 +76,7 @@ def login():
         username = username.lower()
         password = request.form['password']
 
-        # save to session
+        # Save to session
         session['current_user'] = str(username)
 
         existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
@@ -88,7 +100,7 @@ def register():
         username = username.lower()
         password = request.form['password']
 
-        # save to session, if a person isn't logged in already.
+        # Save to session, if a person isn't logged in already.
         if not 'current_user' in session:
             session['current_user'] = str(username)
 
@@ -120,7 +132,7 @@ def display_encryption_page():
 
         if encryptiontype == 'cesar':
             offsetfactor = offset.get_offset(request.form['offset'])
-            # save to session
+            # Save to session
             session['offset'] = str(offsetfactor)
             for letter in string_to_encrypt:
                 new_encodedstring += Cesar.cesar_encrypter(offsetfactor, letter, list_of_characters)
@@ -136,21 +148,20 @@ def display_encryption_page():
                 new_encodedstring += MonoAlphabetic.mono_encrypter(letter, list_of_characters,
                                                                    list_of_characters_reverse)
 
-        # to get the encryptiontype from the DB -- It searches for the last item
-        type = db.session.query(EncryptionTypeTB)\
-            .filter(EncryptionTypeTB.encryption_type_type == encryptiontype)\
+        # Get the encryptiontype from the database -- It searches for the last item
+        encryption_type = db.session.query(EncryptionTypeTB)\
             .order_by(EncryptionTypeTB.encryption_type_id.desc())\
             .first()
 
-        # to get the user from the DB
+        # Get the user from the database
         username = str(session['current_user'])
         user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
 
-        new_string = EncodedStringTB(new_encodedstring, user.user_id, type.encryption_type_id)
+        new_string = EncodedStringTB(new_encodedstring, user.user_id, encryption_type.encryption_type_id)
         db.session.add(new_string)
         db.session.commit()
 
-        # save to session
+        # Save to session
         session['encryptiontype'] = str(encryptiontype)
         session['unencoded_string'] = str(string_to_encrypt)
         session['encoded_string'] = str(new_encodedstring)
@@ -164,7 +175,8 @@ def display_encryption_page():
 @check_if_the_user_has_encrypted_text
 def display_result_page():
     encryptiontype = str(session['encryptiontype'])
-    session.pop('encryptiontype', None)  # .pop deletes the content
+    # .pop deletes the content
+    session.pop('encryptiontype', None)
 
     if encryptiontype == 'cesar':
         offsetfactor = str(session['offset'])
@@ -201,18 +213,21 @@ def logout():
 @webapp.route("/catfact", methods=['GET'])
 @check_user_is_logged_in
 def catfact():
-    # api documentation: https://alexwohlbruck.github.io/cat-facts/docs/
+    # Api documentation: https://alexwohlbruck.github.io/cat-facts/docs/
     response = requests.get("https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=1")
-    response_body = response.json()  # parse response into json dictionary
+    # parse response into json dictionary
+    response_body = response.json()
     return render_template('catfact.html', catfact=response_body)
 
 
 @webapp.route("/joke", methods=['GET'])
 @check_user_is_logged_in
 def joke():
-    # api documentation: http://www.icndb.com/api/
-    response = requests.get("http://api.icndb.com/jokes/random?escape=html") # The results are escaped to html --> " = &quot;
-    response_body = response.json()  # parse response into json dictionary
+    # Api documentation: http://www.icndb.com/api/
+    # The results are escaped to html --> " = &quot;
+    response = requests.get("http://api.icndb.com/jokes/random?escape=html")
+    # parse response into json dictionary
+    response_body = response.json()
     return render_template('joke.html', joke=response_body)
 
 

@@ -5,6 +5,7 @@ from encryption.Cesar import cesar_encrypter
 
 
 class TestCesar(TestCase):
+    """ Class for testing monoalphabetic encryption """
     # abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
     list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
 

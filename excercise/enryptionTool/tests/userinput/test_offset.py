@@ -4,6 +4,7 @@ from userinput import offset
 
 
 class TestOffset(TestCase):
+    """ Class for testing the offset generator """
     def test_if_number_is_returned(self):
         """
         Tests if it returns the given number

@@ -6,10 +6,12 @@ Base = declarative_base()
 
 
 class UserTB(Base):
+    """ Defines the UserTB for the database"""
     __tablename__ = 'user'
     user_id = Column(Integer, primary_key=True)
     user_name = Column(String(80), unique=True, nullable=False)
     user_password = Column(String(160))
+    # Creates a relationship to the EncodedStringTB
     user_encrypted_string = relationship("EncodedStringTB", back_populates="encoded_string_userstr")
 
     def __init__(self, name: str, password: str = None):
@@ -21,11 +23,14 @@ class UserTB(Base):
 
 
 class EncodedStringTB(Base):
+    """ Defines the EncodedStringTB for the database"""
     __tablename__ = 'encrypted_string'
     encoded_string_id = Column(Integer, primary_key=True)
     encoded_string_string = Column(String(256), nullable=False)
+    # Creates a relationship to the UserTB
     encoded_string_user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False)
     encoded_string_userstr = relationship("UserTB", back_populates="user_encrypted_string")
+    # Creates a relationshipl to the EncryptionTypeTB
     encoded_string_encryption_type_id = Column(Integer, ForeignKey('encryption_type.encryption_type_id'), nullable=False)
     encoded_string_typerelation = relationship("EncryptionTypeTB", back_populates="encryption_type_typerelation")
 
@@ -39,9 +44,11 @@ class EncodedStringTB(Base):
 
 
 class EncryptionTypeTB(Base):
+    """ Defines the EncryptionTypeTB for the database"""
     __tablename__ = 'encryption_type'
     encryption_type_id = Column(Integer, primary_key=True)
     encryption_type_type = Column(String(30), nullable=False)
+    # Creates a relationship to the EncodedStringTB
     encryption_type_typerelation = relationship("EncodedStringTB", back_populates="encoded_string_typerelation")
 
     def __init__(self, encryption_type: str):
@@ -52,6 +59,9 @@ class EncryptionTypeTB(Base):
 
 
 class CesarTB(EncryptionTypeTB):
+    """ Defines the CesarTB for the database,
+    is an extension of EncryptionTypeTB
+    """
     __tablename__ = 'cesar'
     cesar_id = Column(Integer, ForeignKey('encryption_type.encryption_type_id'), primary_key=True)
     cesar_offset = Column(Integer)
@@ -65,6 +75,9 @@ class CesarTB(EncryptionTypeTB):
 
 
 class MonoAlphabeticSubstitutionTB(EncryptionTypeTB):
+    """ Defines the Mono...TB for the database,
+    is an extension of EncryptionTypeTB
+    """
     __tablename__ = 'mono_alphabetic_substitution'
     mono_id = Column(Integer, ForeignKey('encryption_type.encryption_type_id'), primary_key=True)
 

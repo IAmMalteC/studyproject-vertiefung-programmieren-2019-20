@@ -12,16 +12,21 @@ list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.di
 
 
 def __startup__():
+    """ Starts the login and creates a database session
+    :return: current_username of type string
+    """
     print('LOGIN')
     current_username = input('Please enter your username: ').lower()
     create_database_connection()
     user = save_user_check_exists(current_username)
-    print("Welcome " + databasemodel.UserTB.__repr__(user))  # Welcome message
-    
+    # Welcome message
+    print("Welcome " + databasemodel.UserTB.__repr__(user))
+
     return current_username
 
 
 def __menu__(current_username):
+    """ Shows a menu """
     while True:
         print('ENCRYPTION TOOL\n1 : Cesar encryption\n2 : Mono alphabetic substitution\n3 : About\n4 : Quit program')
 

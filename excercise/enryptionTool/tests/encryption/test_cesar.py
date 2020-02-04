@@ -30,7 +30,7 @@ class TestCesar(TestCase):
 
     def test_list_contains_characters(self):
         """
-        Tests if all asked letters are in the string
+        Tests if an asked character is in the string
         call with reduced value range
         """
         text_data = "~"

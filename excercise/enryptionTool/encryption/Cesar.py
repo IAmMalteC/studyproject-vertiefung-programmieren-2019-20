@@ -14,6 +14,12 @@ class Cesar(object):
         # list_of_characters = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         output = ''
         text_from_user = input('Type the text you want to encrypt:')
+
+        # Shortens the chosen offset factor, when it is longer then the array
+        # We are doing it here, because then we just have to do it once and not every time the encrypter is used.
+        while len(list_of_characters) < offset_factor:
+            offset_factor = offset_factor - len(list_of_characters)
+
         for character in text_from_user:
             output = output + cesar_encrypter(offset_factor, character, list_of_characters)
 
@@ -35,10 +41,7 @@ def cesar_encrypter(offset_factor, unencoded_character, character_list):
         if unencoded_character == ' ':
             encoded_character = unencoded_character
         else:
-            # Checks if the chosen offset factor is too long for the array
-            while len(character_list) < offset_factor:
-                offset_factor = offset_factor - len(character_list)
-            # Sets x to the character by adding the offsetfactor to the index of the given character
+            # Sets encoded_character to the character by adding the offsetfactor to the index of the given character
             encoded_character = character_list[character_list.index(unencoded_character) + offset_factor]
     except IndexError:
         # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1

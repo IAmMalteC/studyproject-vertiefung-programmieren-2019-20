@@ -3,24 +3,27 @@
 
 <head>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}" />
+    <link rel="stylesheets" href="{{url_for('static', filename='normalize.css') }}" />
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- To add head data on the html pages -->
+    <!-- Add head data on the html pages -->
     {% block head %}
     {% endblock %}
 </head>
 
 </html>
+<!-- Actually just used for the result page -->
 <body onload="checkIfCesarWasUsedForEncryption()">
-    <header>
+    <nav class="pure-menu pure-menu-horizontal">
         {% if not 'current_user' in session %}
             {% include "topnavnotactive.html" %}
         {% else %}
             {% include "topnavactive.html" %}
         {% endif %}
-    </header>
-    <!-- to give some user feedback -->
+    </nav>
+    <!-- Give some user feedback -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <ul class=flashes>
@@ -30,7 +33,7 @@
     </ul>
     {% endif %}
     {% endwith %}
-    <div id="content">
+    <div class="container">
         {% block content %}
         {% endblock %}
     </div>

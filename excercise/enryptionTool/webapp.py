@@ -1,5 +1,6 @@
 from app import list_of_characters
-from database.databasemodel import Base, UserTB, CesarTB, MonoAlphabeticSubstitutionTB, EncodedStringTB, EncryptionTypeTB
+from database.databasemodel import Base, UserTB, CesarTB, MonoAlphabeticSubstitutionTB, EncodedStringTB, \
+    EncryptionTypeTB
 from encryption import Cesar, MonoAlphabetic
 from flask import Flask, render_template, redirect, request, session, flash
 from flask_session import Session
@@ -31,6 +32,7 @@ def check_user_is_logged_in(func):
     :param func:
     :return:
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'current_user' in session:
@@ -38,6 +40,7 @@ def check_user_is_logged_in(func):
         else:
             flash("Please login first.", "error")
             return redirect('/login')
+
     return wrapper
 
 
@@ -46,6 +49,7 @@ def check_if_the_user_has_encrypted_text(func):
     :param func:
     :return:
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'encryptiontype' in session:
@@ -53,6 +57,7 @@ def check_if_the_user_has_encrypted_text(func):
         else:
             flash("Let us first encrypt some text.", "error")
             return redirect('/encryption')
+
     return wrapper
 
 
@@ -76,17 +81,17 @@ def login():
         username = username.lower()
         password = request.form['password']
 
-        # Save to session
-        session['current_user'] = str(username)
-
         existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
-        # Last part added so that user, who already registered in the console app, can use the website.
-        if existing_user.user_password == password or existing_user.user_password is None and password == '':
-            return redirect("/encryption")
-        elif existing_user:
-            flash("Wrong password","error")
-            return redirect('/login')
-        flash("Please register first","error")
+        if existing_user:
+            # Last part added so that user, who already registered in the console app, can use the website.
+            if existing_user.user_password == password or existing_user.user_password is None and password == '':
+                # Save to session
+                session['current_user'] = str(username)
+                return redirect("/encryption")
+            elif existing_user:
+                flash("Wrong password", "error")
+                return redirect('/login')
+        flash("Please register first", "error")
         return redirect('/login')
 
     return render_template('login.html', form=form)
@@ -100,9 +105,9 @@ def register():
         username = username.lower()
         password = request.form['password']
 
-        # Save to session, if a person isn't logged in already.
-        if not 'current_user' in session:
-            session['current_user'] = str(username)
+        # # Save to session, if a person isn't logged in already.
+        # if not 'current_user' in session:
+        #     session['current_user'] = str(username)
 
         existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
         if existing_user:
@@ -112,10 +117,7 @@ def register():
         new_user = UserTB(username, password)
         db.session.add(new_user)
         db.session.commit()
-        if 'current_user' in session == username:
-            flash("Succesfully registered.", "session")
-        else:
-            flash("Succesfully registered a new user.\nHe or she can now login.", "session")
+        flash("Succesfully registered.", "session")
         return redirect("/register")
 
     return render_template('register.html', form=form)
@@ -149,8 +151,8 @@ def display_encryption_page():
                                                                    list_of_characters_reverse)
 
         # Get the encryptiontype from the database -- It searches for the last item
-        encryption_type = db.session.query(EncryptionTypeTB)\
-            .order_by(EncryptionTypeTB.encryption_type_id.desc())\
+        encryption_type = db.session.query(EncryptionTypeTB) \
+            .order_by(EncryptionTypeTB.encryption_type_id.desc()) \
             .first()
 
         # Get the user from the database
@@ -192,7 +194,7 @@ def display_result_page():
 
     return render_template('result.html',
                            encryptiontype=encryptiontype, offset=offsetfactor,
-                           unencoded_string = unencoded_string, encoded_string=encoded_string)
+                           unencoded_string=unencoded_string, encoded_string=encoded_string)
 
 
 @webapp.route("/users", methods=['GET'])

@@ -6,7 +6,7 @@
     <div>
         <p>Here you can create an account for yourself or for other people.</p>
     </div>
-    <form action="/register" method="POST">
+    <form class="pure-form"  action="/register" method="POST">
         {{ form.csrf_token }}
         <div class="form-field">
             {{ form.username.label }} {{ form.username }}

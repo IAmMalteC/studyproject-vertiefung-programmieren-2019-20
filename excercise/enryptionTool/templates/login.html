@@ -3,7 +3,7 @@
 {% block content %}
 <div class="formwrapper">
     <h1 class="title">Login</h1>
-    <form action="/" method="POST">
+    <form class="pure-form pure-form-stacked" action="/" method="POST">
         {{ form.csrf_token }}
         <div class="form-field">
             {{ form.username.label }} {{ form.username }}

@@ -8,7 +8,7 @@
     
 <div class="formwrapper">
     <h1 class="title">Encryption</h1>
-    <form action="/encryption" method="POST">
+    <form class="pure-form" action="/encryption" method="POST">
         {{ form.csrf_token }}
         <div class="form-field" id='encryptiontype'>
             {{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}

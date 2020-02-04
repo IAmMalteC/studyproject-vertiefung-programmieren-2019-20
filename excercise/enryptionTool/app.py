@@ -39,7 +39,7 @@ def __menu__(current_username):
             MonoAlphabetic(current_username, list_of_characters)
         # About page
         elif text == '3':
-            print('This is a basic encryption tool')
+            print('\nThis is a basic encryption tool.\n')
         # Quit program
         elif text == '4' or text == "exit":
             print('Goodbye')

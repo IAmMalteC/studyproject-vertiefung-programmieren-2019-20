@@ -11,14 +11,7 @@
         <div class="form-field">
             {{ form.password.label }} {{ form.password }}
         </div>
-        {{ form.submit }}
-        {% for field in form.errors %}
-            {% for error in form.errors[field] %}
-            <div class="alert alert-error">
-                Error in the field {{field}}: {{error}}
-            </div>
-            {% endfor %}
-        {% endfor %}
+        {{ form.submit(class="pure-button pure-button-primary") }}
     </form>
 </div>
 {% endblock %}

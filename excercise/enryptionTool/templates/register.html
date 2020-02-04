@@ -6,7 +6,7 @@
     <div>
         <p>Here you can create an account for yourself or for other people.</p>
     </div>
-    <form class="pure-form"  action="/register" method="POST">
+    <form class="pure-form pure-form-stacked"  action="/register" method="POST">
         {{ form.csrf_token }}
         <div class="form-field">
             {{ form.username.label }} {{ form.username }}
@@ -14,14 +14,7 @@
         <div class="form-field">
             {{ form.password.label }} {{ form.password }}
         </div>
-        {{ form.submit }}
-        {% for field in form.errors %}
-            {% for error in form.errors[field] %}
-            <div class="alert alert-error">
-                Error in the field {{field}}: {{error}}
-            </div>
-            {% endfor %}
-        {% endfor %}
+        {{ form.submit(class="pure-button pure-button-primary")}}
     </form>
 </div>
 {% endblock %}

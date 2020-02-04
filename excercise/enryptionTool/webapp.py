@@ -58,21 +58,25 @@ def login():
     if 'current_user' in session:
         flash("You are already logged in.\nIf you want to login as an other user, you first have to logout.", "error")
         return render_template('login.html', form=form)
+
     if form.validate_on_submit():
         username = request.form['username']
         username = username.lower()
         password = request.form['password']
+
         # save to session
         session['current_user'] = str(username)
+
         existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
         # Last part added so that user, who already registered in the console app, can use the website.
-        if existing_user.user_password == password or existing_user.user_password == None and password == '':
+        if existing_user.user_password == password or existing_user.user_password is None and password == '':
             return redirect("/encryption")
         elif existing_user:
             flash("Wrong password","error")
             return redirect('/login')
         flash("Please register first","error")
         return redirect('/login')
+
     return render_template('login.html', form=form)
 
 
@@ -83,13 +87,16 @@ def register():
         username = request.form['username']
         username = username.lower()
         password = request.form['password']
+
         # save to session, if a person isn't logged in already.
         if not 'current_user' in session:
             session['current_user'] = str(username)
+
         existing_user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
         if existing_user:
             flash("Your are already registered, please login", "error")
             return redirect("/register")
+
         new_user = UserTB(username, password)
         db.session.add(new_user)
         db.session.commit()
@@ -98,6 +105,7 @@ def register():
         else:
             flash("Succesfully registered a new user.\nHe or she can now login.", "session")
         return redirect("/register")
+
     return render_template('register.html', form=form)
 
 
@@ -105,11 +113,11 @@ def register():
 @check_user_is_logged_in
 def display_encryption_page():
     form = EncryptionForm()
-    # if request.method == 'POST':
     if form.validate_on_submit():
         string_to_encrypt = request.form['string_to_encrypt']
         encryptiontype = request.form['encryptiontype']
         new_encodedstring = ''
+
         if encryptiontype == 'cesar':
             offsetfactor = offset.get_offset(request.form['offset'])
             # save to session
@@ -125,21 +133,29 @@ def display_encryption_page():
             db.session.commit()
             list_of_characters_reverse = MonoAlphabetic.reverse_text(list_of_characters)
             for letter in string_to_encrypt:
-                new_encodedstring += MonoAlphabetic.mono_encrypter(letter, list_of_characters, list_of_characters_reverse)
+                new_encodedstring += MonoAlphabetic.mono_encrypter(letter, list_of_characters,
+                                                                   list_of_characters_reverse)
 
         # to get the encryptiontype from the DB -- It searches for the last item
-        type = db.session.query(EncryptionTypeTB).filter(EncryptionTypeTB.encryption_type_type == encryptiontype).order_by(EncryptionTypeTB.encryption_type_id.desc()).first()
+        type = db.session.query(EncryptionTypeTB)\
+            .filter(EncryptionTypeTB.encryption_type_type == encryptiontype)\
+            .order_by(EncryptionTypeTB.encryption_type_id.desc())\
+            .first()
+
         # to get the user from the DB
         username = str(session['current_user'])
         user = db.session.query(UserTB).filter(UserTB.user_name == username).first()
+
         new_string = EncodedStringTB(new_encodedstring, user.user_id, type.encryption_type_id)
         db.session.add(new_string)
         db.session.commit()
+
         # save to session
         session['encryptiontype'] = str(encryptiontype)
         session['unencoded_string'] = str(string_to_encrypt)
         session['encoded_string'] = str(new_encodedstring)
         return redirect("/result")
+
     return render_template('encryption.html', form=form, current_user=str(session['current_user']))
 
 
@@ -147,19 +163,24 @@ def display_encryption_page():
 @check_user_is_logged_in
 @check_if_the_user_has_encrypted_text
 def display_result_page():
-    # .pop deletes the content
     encryptiontype = str(session['encryptiontype'])
-    session.pop('encryptiontype', None)
+    session.pop('encryptiontype', None)  # .pop deletes the content
+
     if encryptiontype == 'cesar':
         offsetfactor = str(session['offset'])
     else:
         offsetfactor = ''
     session.pop('offset', None)
+
     unencoded_string = str(session['unencoded_string'])
     session.pop('unencoded_string', None)
+
     encoded_string = str(session['encoded_string'])
     session.pop('encoded_string', None)
-    return render_template('result.html', encryptiontype=encryptiontype, offset=offsetfactor, unencoded_string = unencoded_string, encoded_string=encoded_string)
+
+    return render_template('result.html',
+                           encryptiontype=encryptiontype, offset=offsetfactor,
+                           unencoded_string = unencoded_string, encoded_string=encoded_string)
 
 
 @webapp.route("/users", methods=['GET'])

@@ -30,6 +30,7 @@ def mono_encrypter(unencoded_character, list_original, list_reverse):
     except ValueError:
         # if characters are used which are not in the character list print ¶
         encoded_character = "¶"
+
     return encoded_character
 
 

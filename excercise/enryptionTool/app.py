@@ -17,6 +17,7 @@ def __startup__():
     create_database_connection()
     user = save_user_check_exists(current_username)
     print("Welcome " + databasemodel.UserTB.__repr__(user))  # Welcome message
+    
     return current_username
 
 

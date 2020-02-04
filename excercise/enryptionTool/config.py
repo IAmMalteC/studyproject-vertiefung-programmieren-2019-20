@@ -5,7 +5,7 @@
 # but because it should work with our settings on differnt computers. It is stored here.
 # Se more here: https://hackersandslackers.com/configure-flask-applications
 class Config:
-    """Sets Flask configuartion variables"""
+    """Sets Flask configuration variables"""
     Testing = True
     DEBUG = True
 

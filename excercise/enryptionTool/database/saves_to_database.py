@@ -15,12 +15,14 @@ def create_database():
     database = 'sqlite:///database/datalog.db'
     engine = create_engine(database)
     Base.metadata.create_all(engine)
+
     return engine
 
 
 def open_session(engine):
     temporary_session = sessionmaker(engine)
     created_session = temporary_session()
+
     return created_session
 
 
@@ -35,6 +37,7 @@ def save_user_check_exists(name):
         session.commit()
     else:
         current_user = session.query(UserTB).filter_by(user_name=name).first()
+
     return current_user # Returns the value to welcome the current user
 
 

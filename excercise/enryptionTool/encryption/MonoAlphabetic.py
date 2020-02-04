@@ -47,5 +47,6 @@ def reverse_text(text):
     :param text: input text
     :return: the given input in reverse order
     """
-    return text[::-1]  # [::-1] slices the string by step 1 and reverses the input
+    # [::-1] slices the string by step 1 and reverses the input
+    return text[::-1]
 

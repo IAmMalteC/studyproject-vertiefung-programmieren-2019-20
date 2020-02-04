@@ -27,7 +27,8 @@ def cesar_encrypter(offset_factor, unencoded_character, character_list):
         else:
             while len(character_list) < offset_factor:  # Checks if the chosen offset factor is too long for the array
                 offset_factor = offset_factor - len(character_list)
-            encoded_character = character_list[character_list.index(unencoded_character) + offset_factor]  # sets x to the character by adding the offsetfactor to the index of the given character
+            # sets x to the character by adding the offsetfactor to the index of the given character
+            encoded_character = character_list[character_list.index(unencoded_character) + offset_factor]
     except IndexError:
         # to catch it when the index gets out of range. F. ex. text = ~ and offsetFactor 1
         cesar_encrypter(offset_factor - len(character_list), unencoded_character, character_list)

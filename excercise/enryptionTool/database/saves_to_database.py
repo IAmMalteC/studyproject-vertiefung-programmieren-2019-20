@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from .databasemodel import Base  # import the databasemodel
+from .databasemodel import Base  # imports the databasemodel
 from database.databasemodel import MonoAlphabeticSubstitutionTB, CesarTB, EncodedStringTB, EncryptionTypeTB, UserTB
 
 
@@ -56,7 +56,10 @@ def save_monoalphabetic():
 def save_encryptedstring(output, username, encrytpiontype):
     current_user = session.query(UserTB).filter(UserTB.user_name == username).first()
     # Gets the latest encryption type
-    encryption = session.query(EncryptionTypeTB).filter(EncryptionTypeTB.encryption_type_type == encrytpiontype).order_by(EncryptionTypeTB.encryption_type_id.desc()).first()
+    encryption = session.query(EncryptionTypeTB)\
+        .filter(EncryptionTypeTB.encryption_type_type == encrytpiontype)\
+        .order_by(EncryptionTypeTB.encryption_type_id.desc())\
+        .first()
     # the saving
     encodestring = EncodedStringTB(output, current_user.user_id, encryption.encryption_type_id)
     session.add(encodestring)

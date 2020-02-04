@@ -44,8 +44,8 @@ class EncryptionTypeTB(Base):
     encryption_type_type = Column(String(30), nullable=False)
     encryption_type_typerelation = relationship("EncodedStringTB", back_populates="encoded_string_typerelation")
 
-    def __init__(self, type: str):
-        self.encryption_type_type = type
+    def __init__(self, encryption_type: str):
+        self.encryption_type_type = encryption_type
 
     def __repr__(self):
         return "Type of Encryption [ID: {0}, Type: {1}]".format(self.encryption_type_id, self.encryption_type_type)

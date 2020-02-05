@@ -19,8 +19,6 @@ header {
     margin: 1rem;
 
     border-bottom: 0.5rem solid #000;
-    /* TODO remove background colors */
-    background-color: chartreuse;
 }
 .nav-link {
     /* flex: 0 1 auto; */
@@ -33,7 +31,6 @@ header {
     color: #fff;
 }
 
-
 /* ____Content____ */
 .content {
     display: flex;
@@ -43,9 +40,15 @@ header {
     flex: 1 0 auto;
 
     min-height: auto;
-    /* TODO remove background colors */
-    background-color: coral;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    margin: 0.5rem;
+}
+
+/* ___Forms____ */
+
 
 /* _____Messages_____ */
 .alert {

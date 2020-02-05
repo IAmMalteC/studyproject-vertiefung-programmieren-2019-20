@@ -1,6 +1,7 @@
 * {
   margin: 0;
   font-family: sans-serif;
+  box-sizing: border-box;
 }
 html, body {
     height: 100%;
@@ -37,8 +38,10 @@ header {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    align-content: center;
     flex: 1 0 auto;
 
+    padding: 0.5rem;
     min-height: auto;
 }
 
@@ -47,8 +50,46 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0.5rem;
 }
 
-/* ___Forms____ */
+.content p {
+    max-width: 23rem;
+    margin: 0.5rem 0;
+}
 
+/* ___Forms____ */
+input, select, textarea {
+    /* display: ; */
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    margin: 0 0.25rem 0.5rem; /*top right bottom left */
+    border: 0.063rem solid #ccc;
+    border-radius: 0.25rem;
+}
+.form-message {
+    max-width: 23rem;
+    font-size: small;
+    margin-bottom: 0.5rem;
+}
+.form-list ul{
+    list-style-type: none;
+    width: 0;
+}
+.form-list li {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+input[type=submit] {
+    width: auto;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+  
+input[type=submit]:hover {
+    background-color: #45a049;
+}
 
 /* _____Messages_____ */
 .alert {
@@ -60,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .session {
-    background-color: #00802b;
+    background-color: #4CAF50;
     color: #fff;
 }
 

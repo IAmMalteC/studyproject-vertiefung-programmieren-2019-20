@@ -34,8 +34,8 @@ class RegisterForm(LoginForm):
 class EncryptionForm(FlaskForm):
     """Encryption Form"""
     encryptiontype = RadioField('Type of encryption', validators=[InputRequired()],
-                                choices=[('cesar', 'Cäsar Verschlüsselung'),
-                                         ('monoalphabeticsubstitution', 'Monoalphabetische Substitution')],
+                                choices=[('cesar', 'Cesar'),
+                                         ('monoalphabeticsubstitution', 'Monoalphabeticsubstitution')],
                                 default='cesar')
     offset = StringField('Offsetfactor')  # IntegerField
     string_to_encrypt = TextAreaField('Text to encode', validators=[InputRequired(),

@@ -6,20 +6,20 @@
     <p>Let's encrypt {{ current_user }}!</p>
 </div>
 
-<div class="formwrapper">
-    <h1 class="title">Encryption</h1>
-    <form class="pure-form pure-form-stacked" action="/encryption" method="POST">
+<div>
+    <h1>Encryption</h1>
+    <form action="/encryption" method="POST">
         {{ form.csrf_token }}
-        <div class="form-field" id='encryptiontype'>
+        <div class="form-list" id='encryptiontype'>
             {{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
         </div>
-        <div class="form-field" id='offset'>
+        <div id='offset'>
             {{ form.offset.label }} {{ form.offset }}
-            <div class="pure-form-message">
+            <div class="form-message">
                 If you don't use this field or type something different then a number, the program will use a random number.
             </div>
         </div>
-        <div class="form-field">
+        <div>
             {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
         </div>
         {{ form.submit(class="pure-button pure-button-primary") }}

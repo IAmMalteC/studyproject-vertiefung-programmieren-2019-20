@@ -1,14 +1,14 @@
 {% extends "basetemplate.html" %}
 {% block title %}Login{% endblock %}
 {% block content %}
-<div class="formwrapper">
-    <h1 class="title">Login</h1>
-    <form class="pure-form pure-form-stacked" action="/" method="POST">
+<div>
+    <h1>Login</h1>
+    <form action="/" method="POST">
         {{ form.csrf_token }}
-        <div class="form-field">
+        <div>
             {{ form.username.label }} {{ form.username }}
         </div>
-        <div class="form-field">
+        <div>
             {{ form.password.label }} {{ form.password }}
         </div>
         {{ form.submit(class="pure-button pure-button-primary") }}

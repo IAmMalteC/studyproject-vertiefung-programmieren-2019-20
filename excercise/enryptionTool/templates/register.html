@@ -6,12 +6,12 @@
     <div>
         <p>Here you can create an account for yourself or for other people.</p>
     </div>
-    <form class="pure-form pure-form-stacked"  action="/register" method="POST">
+    <form action="/register" method="POST">
         {{ form.csrf_token }}
-        <div class="form-field">
+        <div>
             {{ form.username.label }} {{ form.username }}
         </div>
-        <div class="form-field">
+        <div>
             {{ form.password.label }} {{ form.password }}
         </div>
         {{ form.submit(class="pure-button pure-button-primary")}}

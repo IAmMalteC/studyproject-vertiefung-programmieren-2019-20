@@ -17,11 +17,10 @@ class Cesar(object):
 
         # Shortens the chosen offset factor, when it is longer then the array
         # We are doing it here, because then we just have to do it once and not every time the encrypter is used.
-        while len(list_of_characters) < offset_factor:
-            offset_factor = offset_factor - len(list_of_characters)
+        short_offset_factor = shorten_cesar_offset(offset_factor, list_of_characters)
 
         for character in text_from_user:
-            output = output + cesar_encrypter(offset_factor, character, list_of_characters)
+            output = output + cesar_encrypter(short_offset_factor, character, list_of_characters)
 
         # Save string to database,
         # encryptiontype is not needed, because it is saved earlier in this class
@@ -51,3 +50,14 @@ def cesar_encrypter(offset_factor, unencoded_character, character_list):
         encoded_character = "¶"
 
     return encoded_character
+
+
+def shorten_cesar_offset(offset_factor, list_of_characters):
+    """ Shortens the offset factor. To avoid run-time errors, if a very big number is given
+    :param offset_factor: the given offset factor
+    :param list_of_characters: the given array to determine the lenght
+    :return: a smaller offset factor, which still have the same offset in the array
+    """
+    while len(list_of_characters) < offset_factor:
+        offset_factor = offset_factor - len(list_of_characters)
+    return offset_factor

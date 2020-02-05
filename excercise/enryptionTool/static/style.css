@@ -51,12 +51,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content p {
-    max-width: 23rem;
+    max-width: 24rem;
     margin: 0.5rem 0;
 }
 
 /* ___Forms____ */
-input, select, textarea {
+input, select, textarea, .button {
     /* display: ; */
     width: 100%;
     padding: 0.75rem 1.25rem;
@@ -65,7 +65,7 @@ input, select, textarea {
     border-radius: 0.25rem;
 }
 .form-message {
-    max-width: 23rem;
+    max-width: 24rem;
     font-size: small;
     margin-bottom: 0.5rem;
 }
@@ -78,7 +78,7 @@ input, select, textarea {
     flex-flow: row nowrap;
 }
 
-input[type=submit] {
+input[type=submit], .button {
     width: auto;
     background-color: #4CAF50;
     color: white;
@@ -87,8 +87,11 @@ input[type=submit] {
     cursor: pointer;
 }
   
-input[type=submit]:hover {
+input[type=submit]:hover, .button:hover {
     background-color: #45a049;
+}
+.button {
+    text-decoration: none;
 }
 
 /* _____Messages_____ */

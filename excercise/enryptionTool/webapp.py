@@ -117,7 +117,7 @@ def register():
         new_user = UserTB(username, password)
         db.session.add(new_user)
         db.session.commit()
-        flash("Succesfully registered.", "session")
+        flash("Successfully registered.", "session")
         return redirect("/register")
 
     return render_template('register.html', form=form)
@@ -136,8 +136,10 @@ def display_encryption_page():
             offsetfactor = offset.get_offset(request.form['offset'])
             # Save to session
             session['offset'] = str(offsetfactor)
+            # Shorten offset factor
+            short_offsetfactor= Cesar.shorten_cesar_offset(offsetfactor, list_of_characters)
             for letter in string_to_encrypt:
-                new_encodedstring += Cesar.cesar_encrypter(offsetfactor, letter, list_of_characters)
+                new_encodedstring += Cesar.cesar_encrypter(short_offsetfactor, letter, list_of_characters)
             new_cesar = CesarTB(offsetfactor)
             db.session.add(new_cesar)
             db.session.commit()

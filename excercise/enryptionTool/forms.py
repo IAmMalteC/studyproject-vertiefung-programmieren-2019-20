@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
     """Login Form"""
     username = StringField('Username', validators=[InputRequired(),
                                                    Length(max=80,
-                                                          message="Your username may not be longer then 80 characters"),
+                                                          message="Your username may not be longer then 80 characters."),
                                                    Regexp('^[a-zA-Z]+$',
                                                           message="Your username must just contain letters.")
                                                    ]
@@ -25,7 +25,7 @@ class RegisterForm(LoginForm):
     """Register Form"""
     password = PasswordField("Password", validators=[InputRequired(),
                                                      Length(max=160,
-                                                            message="Your password may not be longer then 160 characters")
+                                                            message="Your password may not be longer then 160 characters.")
                                                      ]
                              )
     submit = SubmitField('Register')

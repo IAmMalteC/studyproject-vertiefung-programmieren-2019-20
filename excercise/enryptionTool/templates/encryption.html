@@ -14,14 +14,13 @@
             {{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
         </div>
         <div id='offset'>
-            {{ form.offset.label }} {{ form.offset }}
+            {{ form.offset.label }} {{ form.offset(onfocus="this.value=''") }}
             <div class="form-message">
                 If you don't use this field or type something different then a number, the program will use a random number.
             </div>
         </div>
-        <!-- TODO maybe try to fix clear forms-->
         <div>
-            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt(rows="6") }}
+            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt(rows="6", onfocus="this.value=''") }}
         </div>
         {{ form.submit(class="pure-button pure-button-primary") }}
     </form>

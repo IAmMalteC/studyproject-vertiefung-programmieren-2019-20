@@ -1,5 +1,16 @@
 {% extends "basetemplate.html" %}
 {% block title %}Encryption{% endblock %}
+{% block errormessage %}
+    {% if form.errors %}
+        <div class="alert error">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                    <p>{{ form[field_name].label }}: {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
 <!-- Welcomes the logged User -->
 <div class="welcomemessage">

@@ -1,7 +1,18 @@
 {% extends "basetemplate.html" %}
 {% block title %}Register{% endblock %}
+{% block errormessage %}
+    {% if form.errors %}
+        <div class="alert error">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                    <p>{{ form[field_name].label }}: {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
-<div class="formwrapper">
+<div>
     <h1 class="title">Register</h1>
     <div>
         <p>Here you can create an account for yourself or for other people.</p>

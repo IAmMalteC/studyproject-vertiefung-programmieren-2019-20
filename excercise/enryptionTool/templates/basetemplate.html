@@ -24,14 +24,16 @@
     <!-- Give some user feedback -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-
-    <!--Shows messages-->
-    {% for category, message in messages %}
-    <div class="alert {{ category }}">{{ message }}</div>
-    {% endfor %}
-
+        <!--Shows messages-->
+        {% for category, message in messages %}
+        <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
     {% endif %}
     {% endwith %}
+
+    {% block errormessage %}
+    {% endblock %}
+
     <div class="content">
         {% block content %}
         {% endblock %}

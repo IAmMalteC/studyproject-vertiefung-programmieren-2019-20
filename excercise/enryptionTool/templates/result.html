@@ -6,10 +6,12 @@
 {% block content %}
 <div >
     <h1>Your encrypted text</h1>
-    <p>Type of encryption: {{ encryptiontype }}</p>
-    <p id="offsetResult">Offsetfactor: {{ offset }} </p>
-    <p>Unencoded text: {{unencoded_string}}</p>
-    <p>Encoded text: {{encoded_string}}</p>
+    <div class="result">
+        <p><span class="result-type">Type of encryption: </span><span>{{ encryptiontype }}</span></p>
+        <p id="offsetResult"><span class="result-type">Offsetfactor: </span><span>{{ offset }}</span></p>
+        <p><span class="result-type">Unencoded text: </span><span>{{unencoded_string}}</span></p>
+        <p><span class="result-type">Encoded text: </span><span>{{encoded_string}}</span></p>
+    </div>
 </div>
 <div>
     <a class="button" href="/encryption">One more time</a>

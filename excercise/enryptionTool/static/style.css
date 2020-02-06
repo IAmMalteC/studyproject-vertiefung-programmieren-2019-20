@@ -54,7 +54,15 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 24rem;
     margin: 0.5rem 0;
 }
+/*Resultpage*/
+.result {
+    margin: 1rem;
+}
+.result-type {
+    font-weight: bold;
+}
 
+/* The catfact and joke */
 .api-result {
     padding: 1rem;
     background-color: #4d4d4d;

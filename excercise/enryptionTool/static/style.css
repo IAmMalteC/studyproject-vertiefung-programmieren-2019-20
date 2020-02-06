@@ -110,7 +110,6 @@ input[type=submit]:hover, .button:hover {
 .button {
     text-decoration: none;
 }
-
 /* _____Messages_____ */
 .alert, .welcomemessage {
     display: block;

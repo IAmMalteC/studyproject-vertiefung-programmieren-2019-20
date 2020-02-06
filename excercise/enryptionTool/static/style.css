@@ -55,6 +55,12 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0.5rem 0;
 }
 
+.api-result {
+    padding: 1rem;
+    background-color: #4d4d4d;
+    color: #fff;
+}
+
 /* ___Forms____ */
 input, select, textarea, .button {
     /* display: ; */

@@ -229,7 +229,7 @@ def catfact():
 def joke():
     # Api documentation: http://www.icndb.com/api/
     # The results are escaped to html --> " = &quot;
-    response = requests.get("http://api.icndb.com/jokes/random?escape=html")
+    response = requests.get("http://api.icndb.com/jokes/random")
     # parse response into json dictionary
     response_body = response.json()
     return render_template('joke.html', joke=response_body)

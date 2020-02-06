@@ -3,11 +3,11 @@
 {% block content %}
 <div>
     <h1>Registred users</h1>
-    <div class="userlist">
+    <div>
         {% for users in useroutput %}
-            <div class="userlist item">
+            <p>
                 {{ users.user_name }}
-            </div>
+            </p>
         {% endfor %}
     </div>
 </div>

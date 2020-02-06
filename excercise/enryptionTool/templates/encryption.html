@@ -19,9 +19,9 @@
                 If you don't use this field or type something different then a number, the program will use a random number.
             </div>
         </div>
-        <!-- TODO maybe try to fix the problem of a new line and clear forms-->
+        <!-- TODO maybe try to fix clear forms-->
         <div>
-            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt }}
+            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt(rows="6") }}
         </div>
         {{ form.submit(class="pure-button pure-button-primary") }}
     </form>

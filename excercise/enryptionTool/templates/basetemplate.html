@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css') }}" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add head data on the html pages -->
+    {% block head %}
+    {% endblock %}
+</head>
+
+</html>
+<!-- Actually just used for the result page -->
+<body onload="checkIfCesarWasUsedForEncryption()">
+    <header>
+        {% if not 'current_user' in session %}
+            {% include "topnavnotactive.html" %}
+        {% else %}
+            {% include "topnavactive.html" %}
+        {% endif %}
+    </header>
+    <!-- Give some user feedback -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <!--Shows messages-->
+        {% for category, message in messages %}
+        <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% block errormessage %}
+    {% endblock %}
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% include "footer.html" %}
+    <!--to handle CSRF Protection on templates without forms-->
+    <form method="post" action="/">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+    <script type="text/javascript" src="{{url_for('static', filename='script.js') }}"></script>
+</body>

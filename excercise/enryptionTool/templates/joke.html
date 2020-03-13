@@ -1,0 +1,8 @@
+{% extends "basetemplate.html" %}
+{% block title %}A lame joke{% endblock %}
+{% block content %}
+<div class="api-result">
+    <p>A Chuck Norris joke:</p>
+    <p>&quot;{{ joke['value']['joke']|safe }}&quot;</p>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "basetemplate.html" %}
+{% block title %}A catfact{% endblock %}
+{% block content %}
+<div class="api-result">
+    <p>A random fact about cats:</p>
+    <p>&quot;{{ catfact['text'] }}&quot;</p>
+</div>
+{% endblock %}

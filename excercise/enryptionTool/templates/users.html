@@ -1,0 +1,14 @@
+{% extends "basetemplate.html" %}
+{% block title %}Registred users{% endblock %}
+{% block content %}
+<div>
+    <h1>Registred users</h1>
+    <div>
+        {% for users in useroutput %}
+            <p>
+                {{ users.user_name }}
+            </p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

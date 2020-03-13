@@ -331,3 +331,5 @@ local.properties
 .scala_dependencies
 .worksheet
 
+# Virtual Environment
+venv/

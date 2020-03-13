@@ -1,0 +1,28 @@
+{% extends "basetemplate.html" %}
+{% block title %}Login{% endblock %}
+{% block errormessage %}
+    {% if form.errors %}
+        <div class="alert error">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                    <p>{{ form[field_name].label }}: {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div>
+    <h1>Login</h1>
+    <form action="/" method="POST">
+        {{ form.csrf_token }}
+        <div>
+            {{ form.username.label }} {{ form.username(onfocus="this.value=''") }}
+        </div>
+        <div>
+            {{ form.password.label }} {{ form.password(onfocus="this.value=''") }}
+        </div>
+        {{ form.submit(class="pure-button pure-button-primary") }}
+    </form>
+</div>
+{% endblock %}

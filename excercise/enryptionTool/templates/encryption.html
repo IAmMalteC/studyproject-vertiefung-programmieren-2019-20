@@ -1,0 +1,38 @@
+{% extends "basetemplate.html" %}
+{% block title %}Encryption{% endblock %}
+{% block errormessage %}
+    {% if form.errors %}
+        <div class="alert error">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                {% for error in field_errors %}
+                    <p>{{ form[field_name].label }}: {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+{% block content %}
+<!-- Welcomes the logged User -->
+<div class="welcomemessage">
+    <p>Let's encrypt {{ current_user }}!</p>
+</div>
+<div>
+    <h1>Encryption</h1>
+    <form action="/encryption" method="POST">
+        {{ form.csrf_token }}
+        <div class="form-list" id='encryptiontype'>
+            {{ form.encryptiontype.label }} {{ form.encryptiontype(**{"onchange":"changeOffsetVisibility()"}) }}
+        </div>
+        <div id='offset'>
+            {{ form.offset.label }} {{ form.offset(onfocus="this.value=''") }}
+            <div class="form-message">
+                If you don't use this field or type something different then a number, the program will use a random number.
+            </div>
+        </div>
+        <div>
+            {{ form.string_to_encrypt.label }} {{ form.string_to_encrypt(rows="6", onfocus="this.value=''") }}
+        </div>
+        {{ form.submit(class="pure-button pure-button-primary") }}
+    </form>
+</div>
+{% endblock %}

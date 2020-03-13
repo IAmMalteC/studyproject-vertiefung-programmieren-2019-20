@@ -1,0 +1,19 @@
+{% extends "basetemplate.html" %}
+{% block title %}Result{% endblock %}
+{% block head %}
+    <meta name="offsetStatus" content="{{ offset }}">
+{% endblock %}
+{% block content %}
+<div >
+    <h1>Your encrypted text</h1>
+    <div class="result">
+        <p><span class="result-type">Type of encryption: </span><span>{{ encryptiontype }}</span></p>
+        <p id="offsetResult"><span class="result-type">Offsetfactor: </span><span>{{ offset }}</span></p>
+        <p><span class="result-type">Unencoded text: </span><span>{{unencoded_string}}</span></p>
+        <p><span class="result-type">Encoded text: </span><span>{{encoded_string}}</span></p>
+    </div>
+</div>
+<div>
+    <a class="button" href="/encryption">One more time</a>
+</div>
+{% endblock %}
